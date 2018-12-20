@@ -1,3 +1,4 @@
+const path = require('path')
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -10,14 +11,14 @@ const app = express();
 app.use(morgan('dev'));
 
 // static middleware
-app.use(express.static(path.join(__dirname, './path/to/static/assets')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // body-parsing middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // routes
-app.use('/api', require('./server/api'));
+app.use('/api', require('./api'));
 
 // error middleware
 app.use(function (req, res, next) {
@@ -26,10 +27,10 @@ app.use(function (req, res, next) {
   next(err);
 });
 
-// send index.html for any requests that don't match one of our API routes.
-app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, './path/to/index.html'));
-});
+  // sends index.html
+  app.use('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public/index.html'))
+  })
 
 // server errors (if any errors get this far)
 app.use(function (err, req, res, next) {
