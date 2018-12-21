@@ -1,7 +1,8 @@
-const path = require('path')
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const db = require('./db')
 
 
 // main express app
@@ -39,7 +40,14 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500).send(err.message || 'Internal server error.');
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, function () {
-  console.log(`Server is listening on port ${port}`);
-});
+const PORT = process.env.PORT || 3000;
+
+db.sync()
+  .then(() => {
+    console.log('The database is synced!')
+    app.listen(PORT, () => console.log(`
+      Listening on port ${PORT}
+      http://localhost:3000/
+
+    `))
+  })
