@@ -1,15 +1,15 @@
-const Sequelize = require('sequelize')
-const db = require('../db');
+// const Sequelize = require('sequelize')
+// const db = require('../db');
 
 
-const Chapter = db.define('chapter', {
-  number: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
-  }
-})
+// const Chapter = db.define('chapter', {
+//   number: {
+//     type: Sequelize.INTEGER,
+//     allowNull: false,
+//     validate: {
+//       notEmpty: true
+//     }
+//   }
+// })
 
-module.exports = Chapter;
+// module.exports = Chapter;

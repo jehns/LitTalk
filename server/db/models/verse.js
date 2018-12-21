@@ -10,6 +10,13 @@ const Verse = db.define('verse', {
       notEmpty: true
     }
   },
+  chapter: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
+  },
   catagory: {
     type: Sequelize.STRING
   },

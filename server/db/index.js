@@ -1,4 +1,4 @@
 const db = require('./db')
-const {User, Book, Chapter, Verse} = require('./models')
+const {User, Book, Verse} = require('./models')
 
-module.exports = {db, User, Book, Chapter, Verse}
+module.exports = {db, User, Book, Verse}
