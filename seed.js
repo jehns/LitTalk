@@ -1,35 +1,43 @@
 const {db, Book, Chapter, Verse, User} = require('./server/db')
-const {green, red} = require('chalk')
-const image = 'https://mobileimages.lowes.com/product/converted/043033/043033570362.jpg'
 
-const User = [
-  {},
-
+const users = [
+  {name: 'Stuart', email: 'dummy@gmail.com'},
+  {name: 'Phil', email: 'highaskite@gmail.com'},
+  {name: 'Brian', email: 'wow@hotmail.com'},
 ];
 
-const students = [
-  { firstName: 'Unhappy', lastName: 'Gilmore', email: 'somthing1@gmail.com', imageUrl: image, gpa: 3.8, campusId: 1 },
-  { firstName: 'Luck', lastName: 'Loco', email: 'somthing9@gmail.com', imageUrl: image, gpa: 2.2, campusId: 1 },
-  { firstName: 'Heavy', lastName: 'Lamb', email: 'somthing44@gmail.com', imageUrl: image, gpa: 2.2, campusId: 1 },
-  { firstName: 'Tim', lastName: 'Jorjoe', email: 'somthing3@gmail.com', imageUrl: image, gpa: 1.1, campusId: 2},
-  { firstName: 'Sandman', lastName: 'Ono', email: 'somthing88@gmail.com', imageUrl: image, gpa: 3.2, campusId: 2 },
-  { firstName: 'Sanjeev', lastName: 'Sharma', email: 'somthing221@gmail.com', imageUrl: image, gpa: 3.2, campusId: 3 },
-  { firstName: 'Stu', lastName: 'Boss', email: 'somthing12@gmail.com', imageUrl: image, gpa: 3.9, campusId: 3 },
-  { firstName: 'Mandy', lastName: 'May', email: 'somthing678@gmail.com', imageUrl: image, gpa: 1.8, campusId: 3 },
-  { firstName: 'Cruise', lastName: 'Tommy', email: 'somthing55@gmail.com', imageUrl: image, gpa: 3.1, campusId: 4 },
-  { firstName: 'Jake', lastName: 'Snake', email: 'somthing100@gmail.com', imageUrl: image, gpa: 3.5, campusId: 4 },
+const books = [
+  { name: 'Luke' }
 ];
+
+const chapters = [
+  { number: 1, bookId: 1 },
+  { number: 2, bookId: 1 },
+  { number: 3, bookId: 1 }
+];
+
+const verses = [
+  { verse: 1, catagory: 'Intolerence', content: 'Forasmuch as many have taken in hand to set forth in order a declaration of those things which are most surely believed among us,', comment: "Zacharias and Elizabeth were both getting old, too old to have kids. But Zach prayed, so an angel appeared to tell him that God would take care of things for him. God would somehow get Liz pregnant and she'd have a son named John, who would be filled with the Holy Ghost from the moment God, the angel, the Holy Ghost, or Zach (or maybe all of them working together) got his mom pregnant.", chapterId: 1, bookId: 1},
+  { verse: 2, catagory: 'Violence', content: 'Even as they delivered them unto us, which from the beginning were eyewitnesses, and ministers of the word;', comment: 'There appeared unto him an angel of the Lord standing on the right side of the altar.', chapterId: 1, bookId: 1}
+];
+
 
 
 const seed = async () => {
   await db.sync({force: true})
 
   // seed your database here!
-  await Promise.all(campuses.map(campus =>
-    Campuses.create(campus)))
+  await Promise.all(users.map(user =>
+    User.create(user)))
 
-  await Promise.all(students.map(student =>
-    Students.create(student)))
+  await Promise.all(books.map(book =>
+    Book.create(book)))
+
+  await Promise.all(chapters.map(chapter =>
+    Chapter.create(chapter)))
+
+  await Promise.all(verses.map(verse =>
+    Verse.create(verse)))
 
   console.log(green('Seeding success!'))
   db.close()

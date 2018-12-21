@@ -25,6 +25,9 @@ const db = require('../db');
  Chapter.hasMany(Verse);
  Verse.belongsTo(Chapter);
 
+ Book.hasMany(Verse);
+ Verse.belongsTo(Book);
+
 
 
 module.exports = {

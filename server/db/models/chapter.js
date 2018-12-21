@@ -3,8 +3,8 @@ const db = require('../db');
 
 
 const Chapter = db.define('chapter', {
-  name: {
-    type: Sequelize.STRING,
+  number: {
+    type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
       notEmpty: true

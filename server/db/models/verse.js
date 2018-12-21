@@ -3,15 +3,8 @@ const db = require('../db');
 
 
 const Verse = db.define('verse', {
-  number: {
+  verse: {
     type: Sequelize.INTEGER,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
-  },
-  content: {
-    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true
@@ -20,9 +13,15 @@ const Verse = db.define('verse', {
   catagory: {
     type: Sequelize.STRING
   },
-  comments: {
-    type: Sequelize.ARRAY(Sequelize.STRING),
-    defaultValue: []
+  content: {
+    type: Sequelize.TEXT,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
+  },
+  comment: {
+    type: Sequelize.TEXT,
   }
 })
 

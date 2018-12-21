@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const db = require('./db')
+const {db} = require('./db')
 
 
 // main express app
@@ -28,10 +28,10 @@ app.use(function (req, res, next) {
   next(err);
 });
 
-  // sends index.html
-  app.use('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public/index.html'))
-  })
+// sends index.html
+app.use('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public/index.html'))
+})
 
 // server errors (if any errors get this far)
 app.use(function (err, req, res, next) {
