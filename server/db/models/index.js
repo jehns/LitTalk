@@ -1,4 +1,9 @@
-// const User = require('./user')
+const User = require('./user')
+const Book = require('./book')
+const Chapter = require('./chapter')
+const Verse = require('./verse')
+const db = require('../db');
+
 
 /**
  * If we had any associations to make, this would be a great place to put them!
@@ -14,7 +19,18 @@
  * instead of: const User = require('../db/models/user')
  */
 
+ Book.hasMany(Chapter);
+ Chapter.belongsTo(Book);
 
-// module.exports = {
-//   User
-// }
+ Chapter.hasMany(Verse);
+ Verse.belongsTo(Chapter);
+
+
+
+module.exports = {
+  db,
+  User,
+  Book,
+  Chapter,
+  Verse
+}
