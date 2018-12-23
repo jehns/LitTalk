@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const session = require('express-session')
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const {db} = require('./db')
@@ -17,6 +18,13 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 // body-parsing middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// session middleware
+app.use(session({
+  secret: 'This is not a very secure secret...',
+  resave: false,
+  saveUninitialized: false
+}))
 
 // routes
 app.use('/api', require('./api'));

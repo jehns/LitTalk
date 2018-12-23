@@ -1,9 +1,9 @@
 const {db, Book, Verse, User} = require('./server/db')
 
 const users = [
-  {name: 'Stuart', email: 'dummy@gmail.com'},
-  {name: 'Phil', email: 'highaskite@gmail.com'},
-  {name: 'Brian', email: 'wow@hotmail.com'},
+  {name: 'Stuart', email: 'sj@gmail.com', password: '123'},
+  {name: 'Phil', email: 'pw@gmail.com', password: 'abc'},
+  {name: 'Brian', email: 'wow@hotmail.com', password: 'password'},
 ];
 
 const books = [

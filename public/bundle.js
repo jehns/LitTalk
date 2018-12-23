@@ -151,6 +151,7 @@ function (_Component) {
   }, {
     key: "handleClick",
     value: function handleClick(verse) {
+      this.props.selectVerse(verse.id);
       this.setState({
         comment: verse.comment
       });
@@ -177,7 +178,8 @@ function (_Component) {
           key: verse.id,
           onClick: function onClick() {
             return _this2.handleClick(verse);
-          }
+          },
+          className: _this2.props.selectedVerse === verse.id ? "orange" : ""
         }, verse.content);
       })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Something went wrong...")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Grid"], {
         item: true,
@@ -194,7 +196,8 @@ function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    verses: state.verses
+    verses: state.verses,
+    selectedVerse: state.selectedVerse
   };
 };
 
@@ -202,6 +205,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     getChapterVerses: function getChapterVerses(book, chapter) {
       return dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_3__["getChapterVerses"])(book, chapter));
+    },
+    selectVerse: function selectVerse(id) {
+      return dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_3__["selectVerse"])(id));
     }
   };
 };
@@ -283,6 +289,87 @@ function (_Component) {
 
 /***/ }),
 
+/***/ "./client/components/Login.js":
+/*!************************************!*\
+  !*** ./client/components/Login.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+var Login =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Login, _Component);
+
+  function Login() {
+    var _this;
+
+    _classCallCheck(this, Login);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Login).call(this));
+    _this.state = {};
+    return _this;
+  }
+
+  _createClass(Login, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {}
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        htmlFor: "email"
+      }, "Email"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        name: "emial",
+        type: "text"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        htmlFor: "password"
+      }, "Password"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        name: "password",
+        type: "text"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "submit"
+      }));
+    }
+  }]);
+
+  return Login;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+var mapStateToProps = function mapStateToProps(state) {};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(null, null)(Login));
+
+/***/ }),
+
 /***/ "./client/index.js":
 /*!*************************!*\
   !*** ./client/index.js ***!
@@ -301,6 +388,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store */ "./client/store.js");
 /* harmony import */ var _components_Home__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Home */ "./client/components/Home.js");
 /* harmony import */ var _components_Chapter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/Chapter */ "./client/components/Chapter.js");
+/* harmony import */ var _components_Login__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/Login */ "./client/components/Login.js");
+
 
 
 
@@ -313,10 +402,14 @@ react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_
 }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["HashRouter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
   exact: true,
   path: "/",
-  component: _components_Home__WEBPACK_IMPORTED_MODULE_5__["default"]
+  component: _components_Login__WEBPACK_IMPORTED_MODULE_7__["default"]
 }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
+  exact: true,
   path: "/:book",
   component: _components_Chapter__WEBPACK_IMPORTED_MODULE_6__["default"]
+}), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
+  path: "/home",
+  component: _components_Home__WEBPACK_IMPORTED_MODULE_5__["default"]
 })))), document.getElementById('app'));
 
 /***/ }),
@@ -325,12 +418,14 @@ react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_
 /*!*************************!*\
   !*** ./client/store.js ***!
   \*************************/
-/*! exports provided: getChapterVerses, default */
+/*! exports provided: selectVerse, getChapterVerses, getUser, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectVerse", function() { return selectVerse; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getChapterVerses", function() { return getChapterVerses; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUser", function() { return getUser; });
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var redux_thunk__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux-thunk */ "./node_modules/redux-thunk/es/index.js");
 /* harmony import */ var redux_logger__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux-logger */ "./node_modules/redux-logger/dist/redux-logger.js");
@@ -350,15 +445,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
  // actions
 
-var GOT_CHAPTER_VERSES = 'GOT_CHAPTER_VERSES'; // action creators
+var GOT_CHAPTER_VERSES = 'GOT_CHAPTER_VERSES';
+var GOT_USER = 'GOT_USER';
+var SELECTED_VERSE = 'SELECTED_VERSE'; // action creators
 
 var gotVerses = function gotVerses(verses) {
   return {
     type: GOT_CHAPTER_VERSES,
     verses: verses
   };
-}; // thunks
+};
 
+var gotUser = function gotUser(user) {
+  return {
+    type: GOT_USER,
+    user: user
+  };
+};
+
+var selectVerse = function selectVerse(id) {
+  return {
+    type: SELECTED_VERSE,
+    id: id
+  };
+}; // thunks
 
 var getChapterVerses = function getChapterVerses(book, chapter) {
   return (
@@ -403,10 +513,56 @@ var getChapterVerses = function getChapterVerses(book, chapter) {
       };
     }()
   );
+};
+var getUser = function getUser() {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref3 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(dispatch) {
+        var _ref4, data, action;
+
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                _context2.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.get("/api/".concat(book, "/").concat(chapter));
+
+              case 3:
+                _ref4 = _context2.sent;
+                data = _ref4.data;
+                action = gotVerses(data);
+                dispatch(action);
+                _context2.next = 12;
+                break;
+
+              case 9:
+                _context2.prev = 9;
+                _context2.t0 = _context2["catch"](0);
+                console.log(_context2.t0);
+
+              case 12:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[0, 9]]);
+      }));
+
+      return function (_x2) {
+        return _ref3.apply(this, arguments);
+      };
+    }()
+  );
 }; // initial state
 
 var initialState = {
-  verses: [] // reducer
+  verses: [],
+  user: {},
+  selectedVerse: null // reducer
 
 };
 
@@ -418,6 +574,11 @@ var reducer = function reducer() {
     case GOT_CHAPTER_VERSES:
       return _objectSpread({}, state, {
         verses: action.verses
+      });
+
+    case SELECTED_VERSE:
+      return _objectSpread({}, state, {
+        selectedVerse: action.id
       });
 
     default:

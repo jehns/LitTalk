@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
-import { getChapterVerses } from '../store';
+import { getChapterVerses, selectVerse } from '../store';
 import { Grid, Typography } from '@material-ui/core';
 
 
@@ -19,6 +19,7 @@ class Chapter extends Component {
   }
 
   handleClick(verse) {
+    this.props.selectVerse(verse.id);
     this.setState({
       comment: verse.comment
     })
@@ -37,7 +38,7 @@ class Chapter extends Component {
           {this.props.verses ?
           <div>
             {this.props.verses.map((verse) => {
-              return <p key={verse.id} onClick={() => this.handleClick(verse)}>{verse.content}</p>
+              return <p key={verse.id} onClick={() => this.handleClick(verse)} className={this.props.selectedVerse === verse.id ? "orange" : ""}>{verse.content}</p>
             })}
           </div>
 
@@ -53,13 +54,15 @@ class Chapter extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    verses: state.verses
+    verses: state.verses,
+    selectedVerse: state.selectedVerse
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getChapterVerses: (book, chapter) => dispatch(getChapterVerses(book, chapter))
+    getChapterVerses: (book, chapter) => dispatch(getChapterVerses(book, chapter)),
+    selectVerse: (id) => dispatch(selectVerse(id))
   }
 }
 

@@ -18,6 +18,13 @@ const User = db.define('user', {
       isEmail: true
     }
   },
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    }
+  },
   imageUrl: {
     type: Sequelize.STRING,
     defaultValue: 'https://c7.uihere.com/files/340/946/334/avatar-user-computer-icons-software-developer-avatar.jpg'
