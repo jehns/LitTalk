@@ -7,6 +7,7 @@ import axios from 'axios';
 const GOT_CHAPTER_VERSES = 'GOT_CHAPTER_VERSES';
 const GOT_USER = 'GOT_USER';
 const SELECTED_VERSE = 'SELECTED_VERSE';
+const LOGGED_IN_USER = 'LOGGED_IN_USER';
 
 // action creators
 const gotVerses = (verses) => ({
@@ -23,6 +24,11 @@ export const selectVerse = (id) => ({
   id
 })
 
+export const loggedInUser = (user) => ({
+  type: LOGGED_IN_USER,
+  user
+})
+
 // thunks
 export const getChapterVerses = (book, chapter) => {
   return async (dispatch) => {
@@ -34,16 +40,34 @@ export const getChapterVerses = (book, chapter) => {
   }
 }
 
-export const getUser = () => {
+export const getUser = (user) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.get(`/api/${book}/${chapter}`);
-      const action = gotVerses(data);
+      const {data} = await axios.put(`/api/auth/login`, user);
+      const action = gotUser(data);
       dispatch(action);
     }catch(err) {console.log(err)}
   }
 }
 
+export const fetchUser = () => {
+  return async (dispatch) => {
+    try {
+      const {data} = await axios.get(`/api/auth/me`);
+      const action = gotUser(data);
+      dispatch(action);
+    }catch(err) {console.log(err)}
+  }
+}
+
+export const logout = () => {
+  return async dispatch => {
+    try {
+      await axios.delete('/api/auth/logout')
+      dispatch(gotUser({}))
+    } catch(err) {console.log(err)}
+  }
+}
 
 // initial state
 const initialState = {
@@ -58,8 +82,12 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case GOT_CHAPTER_VERSES:
       return {...state, verses: action.verses}
+    case GOT_USER:
+      return {...state, user: action.user}
     case SELECTED_VERSE:
       return {...state, selectedVerse: action.id}
+    case LOGGED_IN_USER:
+    return {...state, user: action.user}
     default:
       return state;
   }
