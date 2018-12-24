@@ -25,9 +25,10 @@ class NavBar extends Component {
         <Grid item><Typography>{this.props.user.name}</Typography></Grid><Grid item><Button onClick={this.handleClickLogout}>Logout</Button></Grid></Grid>
         :
         <Grid container alignItems="center" justify="flex-end">
+        {this.props.history.location.pathname === '/' ? "" :
           <NavLink to="/">
             <Button>Log In</Button>
-          </NavLink>
+          </NavLink>}
         </Grid>}
       </div>
     )

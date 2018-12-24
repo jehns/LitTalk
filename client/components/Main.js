@@ -21,7 +21,7 @@ class Main extends Component {
   render() {
     return (
       <div>
-        <Route path="/"><NavBar /></Route>
+        <NavBar />
 
         <Switch>
           <Route exact path='/' component={Login}/>
@@ -33,7 +33,9 @@ class Main extends Component {
   }
 }
 
-// const mapStateToProps = (state) => ()
+// const mapStateToProps = (state) => ({
+//   user: state.user
+// })
 
 const mapDispatchToProps = (dispatch) => ({
   fetchUser: () => dispatch(fetchUser())

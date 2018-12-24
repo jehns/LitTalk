@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getUser } from '../store';
+import { InputLabel, Input, FormGroup, Button } from '@material-ui/core';
+
 
 
 class Login extends Component {
   constructor() {
     super()
-    this.state = {}
+    this.state = {
+      userFound: false,
+      email: 'ddd',
+      password: 'eeee'
+    }
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount () {
@@ -16,29 +23,40 @@ class Login extends Component {
   handleSubmit(e) {
     e.preventDefault()
     this.props.getUser({
-      email: e.target.email.value,
-      password: e.target.password.value
+      email: this.state.email,
+      password: this.state.password
     })
     this.props.history.push('/home')
   }
 
+  handleChange(e) {
+    console.log(e.target.value)
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input name="email" type="text"/>
-        <label htmlFor="password">Password</label>
-        <input name="password" type="text"/>
-        <input type="submit"/>
-      </form>
+      <div>
+        <FormGroup>
+          <InputLabel htmlFor="email">Email</InputLabel>
+          <Input name="email" type="text" onChange={this.handleChange} value={this.state.emailInput}/>
+          <InputLabel htmlFor="password">Password</InputLabel>
+          <Input name="password" type="text" onChange={this.handleChange} value={this.state.passwordInput}/>
+          <Button onClick={this.handleSubmit}>Submit</Button>
+        </FormGroup>
+      </div>
     )
   }
 }
 
-const mapStateToProps = (state) => {}
+const mapStateToProps = (state) => ({
+  user: state.user
+})
 
 const mapDispatchToProps = (dispatch) => ({
   getUser: (user) => dispatch(getUser(user))
 })
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
