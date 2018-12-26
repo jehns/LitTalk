@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
-import { getChapterVerses, selectVerse } from '../store';
-import { Grid, Typography } from '@material-ui/core';
+import { getChapterVerses, selectVerse, postComment } from '../store';
+import { Grid, Typography, FormGroup, Input, InputLabel, Button } from '@material-ui/core';
 
 
 class Chapter extends Component {
   constructor() {
     super()
-    this.state = {}
+    this.state = {
+      newComment: ''
+    }
     this.handleClick = this.handleClick.bind(this)
+    this.handleClickButton = this.handleClickButton.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount () {
@@ -20,12 +24,27 @@ class Chapter extends Component {
     this.props.selectVerse(verse);
   }
 
+  handleClickButton(e) {
+    e.preventDefault()
+    this.props.postComment({
+      content: this.state.newComment,
+      userId: this.props.user.id,
+      verseId: this.props.selectedVerse.id
+    }, this.props.match.params.book, this.props.selectedVerse.chapter, this.props.selectedVerse.verse)
+  }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
   render() {
     return (
       <Grid container>
         <Grid container>
           <Typography variant="h1">
-              {this.props.match.params.book}
+              {this.props.match.params.book.slice(0,1).toUpperCase() + this.props.match.params.book.slice(1)}
           </Typography>
         </Grid>
 
@@ -45,10 +64,28 @@ class Chapter extends Component {
             <Typography variant="body2">{this.props.selectedVerse.annotation}</Typography>
             <br />
             <br />
-            <Typography variant="h5">Comments</Typography>
+            <Typography variant="h5" style={{textDecoration: 'underline'}}>Comments</Typography>
+            <br />
             {this.props.selectedVerse.comments.map(comment => {
-              return <Typography>{comment.content}</Typography>
+              return (
+              <div key={comment.id}>
+                <Typography variant="h6">{comment.user.name}</Typography>
+                <Typography>{comment.content}</Typography>
+                <Typography>{comment.date}</Typography>
+
+              </div>
+              )
             })}
+            <br />
+            {this.props.user.id ?
+              <FormGroup>
+              <Input name="newComment" type="text" onChange={this.handleChange} value={this.state.newComment}/>
+              <Button onClick={this.handleClickButton}>Post Comment</Button>
+            </FormGroup>
+            :
+            ""
+            }
+
           </div>
           :
           ""
@@ -62,14 +99,16 @@ class Chapter extends Component {
 const mapStateToProps = (state) => {
   return {
     verses: state.verses,
-    selectedVerse: state.selectedVerse
+    selectedVerse: state.selectedVerse,
+    user: state.user
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getChapterVerses: (book, chapter) => dispatch(getChapterVerses(book, chapter)),
-    selectVerse: (verse) => dispatch(selectVerse(verse))
+    selectVerse: (verse) => dispatch(selectVerse(verse)),
+    postComment: (comment, book, chapter, verse) => dispatch(postComment(comment))
   }
 }
 

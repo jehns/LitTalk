@@ -9,10 +9,20 @@ router.get('/:chapter', async (req, res, next) => {
         chapter: req.params.chapter
       },
       include: [{
-        model: Comment
+        model: Comment,
+        include: [{
+          model: User
+        }]
       }]
     })
     res.json(verses)
+  } catch(err) {next(err)}
+})
+
+router.post('/:chapter/:verse', async (req, res, next) => {
+  try {
+    const comment = await Comment.create(req.body)
+    res.json(comment)
   } catch(err) {next(err)}
 })
 

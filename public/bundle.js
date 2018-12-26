@@ -103,6 +103,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -136,8 +138,12 @@ function (_Component) {
     _classCallCheck(this, Chapter);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Chapter).call(this));
-    _this.state = {};
+    _this.state = {
+      newComment: ''
+    };
     _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleClickButton = _this.handleClickButton.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
@@ -152,6 +158,21 @@ function (_Component) {
       this.props.selectVerse(verse);
     }
   }, {
+    key: "handleClickButton",
+    value: function handleClickButton(e) {
+      e.preventDefault();
+      this.props.postComment({
+        content: this.state.newComment,
+        userId: this.props.user.id,
+        verseId: this.props.selectedVerse.id
+      }, this.props.match.params.book, this.props.selectedVerse.chapter, this.props.selectedVerse.verse);
+    }
+  }, {
+    key: "handleChange",
+    value: function handleChange(e) {
+      this.setState(_defineProperty({}, e.target.name, e.target.value));
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
@@ -162,7 +183,7 @@ function (_Component) {
         container: true
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
         variant: "h1"
-      }, this.props.match.params.book)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Grid"], {
+      }, this.props.match.params.book.slice(0, 1).toUpperCase() + this.props.match.params.book.slice(1))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Grid"], {
         item: true,
         sm: true,
         style: {
@@ -185,10 +206,24 @@ function (_Component) {
       }, this.props.selectedVerse.id ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
         variant: "body2"
       }, this.props.selectedVerse.annotation), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
-        variant: "h5"
-      }, "Comments"), this.props.selectedVerse.comments.map(function (comment) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], null, comment.content);
-      })) : ""));
+        variant: "h5",
+        style: {
+          textDecoration: 'underline'
+        }
+      }, "Comments"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), this.props.selectedVerse.comments.map(function (comment) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: comment.id
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
+          variant: "h6"
+        }, comment.user.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], null, comment.content), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], null, comment.date));
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), this.props.user.id ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["FormGroup"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Input"], {
+        name: "newComment",
+        type: "text",
+        onChange: this.handleChange,
+        value: this.state.newComment
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Button"], {
+        onClick: this.handleClickButton
+      }, "Post Comment")) : "") : ""));
     }
   }]);
 
@@ -198,7 +233,8 @@ function (_Component) {
 var mapStateToProps = function mapStateToProps(state) {
   return {
     verses: state.verses,
-    selectedVerse: state.selectedVerse
+    selectedVerse: state.selectedVerse,
+    user: state.user
   };
 };
 
@@ -209,6 +245,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     selectVerse: function selectVerse(verse) {
       return dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_3__["selectVerse"])(verse));
+    },
+    postComment: function postComment(comment, book, chapter, verse) {
+      return dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_3__["postComment"])(comment));
     }
   };
 };
@@ -276,10 +315,18 @@ function (_Component) {
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.props.user.id ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
         variant: "h3"
-      }, "Welcome, ", this.props.user.name, "!") : "", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["NavLink"], {
-        to: "/luke"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
-        variant: "h4"
+      }, "Welcome, ", this.props.user.name, "!") : "", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
+        variant: "h4",
+        style: {
+          textDecoration: 'underline'
+        }
+      }, "Books"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["NavLink"], {
+        to: "/luke",
+        style: {
+          textDecoration: 'none'
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
+        variant: "h5"
       }, "Luke")));
     }
   }]);
@@ -662,7 +709,7 @@ react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_
 /*!*************************!*\
   !*** ./client/store.js ***!
   \*************************/
-/*! exports provided: selectVerse, loggedInUser, getChapterVerses, getUser, fetchUser, logout, default */
+/*! exports provided: selectVerse, loggedInUser, getChapterVerses, getUser, fetchUser, postComment, logout, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -672,6 +719,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getChapterVerses", function() { return getChapterVerses; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUser", function() { return getUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchUser", function() { return fetchUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "postComment", function() { return postComment; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logout", function() { return logout; });
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var redux_thunk__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux-thunk */ "./node_modules/redux-thunk/es/index.js");
@@ -695,7 +743,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var GOT_CHAPTER_VERSES = 'GOT_CHAPTER_VERSES';
 var GOT_USER = 'GOT_USER';
 var SELECTED_VERSE = 'SELECTED_VERSE';
-var LOGGED_IN_USER = 'LOGGED_IN_USER'; // action creators
+var LOGGED_IN_USER = 'LOGGED_IN_USER';
+var NEW_COMMENT = 'NEW_COMMENT'; // action creators
 
 var gotVerses = function gotVerses(verses) {
   return {
@@ -708,6 +757,13 @@ var gotUser = function gotUser(user) {
   return {
     type: GOT_USER,
     user: user
+  };
+};
+
+var gotComment = function gotComment(comment) {
+  return {
+    type: NEW_COMMENT,
+    comment: comment
   };
 };
 
@@ -856,37 +912,42 @@ var fetchUser = function fetchUser() {
     }()
   );
 };
-var logout = function logout() {
+var postComment = function postComment(comment, book, chapter, verse) {
   return (
     /*#__PURE__*/
     function () {
       var _ref7 = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee4(dispatch) {
+        var _ref8, data, action;
+
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.prev = 0;
                 _context4.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.delete('/api/auth/logout');
+                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("/api/".concat(book, "/").concat(chapter, "/").concat(verse), comment);
 
               case 3:
-                dispatch(gotUser({}));
-                _context4.next = 9;
+                _ref8 = _context4.sent;
+                data = _ref8.data;
+                action = gotComment(data);
+                dispatch(action);
+                _context4.next = 12;
                 break;
 
-              case 6:
-                _context4.prev = 6;
+              case 9:
+                _context4.prev = 9;
                 _context4.t0 = _context4["catch"](0);
                 console.log(_context4.t0);
 
-              case 9:
+              case 12:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, this, [[0, 6]]);
+        }, _callee4, this, [[0, 9]]);
       }));
 
       return function (_x4) {
@@ -894,16 +955,46 @@ var logout = function logout() {
       };
     }()
   );
-}; // export const getVerseComments = (book, chapter, verse) => {
-//   return async (dispatch) => {
-//     try {
-//       const {data} = await axios.get(`/api/${book}/${chapter}/${verse}`);
-//       const action = gotVerseComments(data);
-//       dispatch(action);
-//     }catch(err) {console.log(err)}
-//   }
-// }
-// initial state
+};
+var logout = function logout() {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref9 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee5(dispatch) {
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.prev = 0;
+                _context5.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.delete('/api/auth/logout');
+
+              case 3:
+                dispatch(gotUser({}));
+                _context5.next = 9;
+                break;
+
+              case 6:
+                _context5.prev = 6;
+                _context5.t0 = _context5["catch"](0);
+                console.log(_context5.t0);
+
+              case 9:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this, [[0, 6]]);
+      }));
+
+      return function (_x5) {
+        return _ref9.apply(this, arguments);
+      };
+    }()
+  );
+}; // initial state
 // should i eager load comments with my initial get request for verses? Or make an axios req everytime a verse is selected?
 
 var initialState = {
@@ -937,6 +1028,9 @@ var reducer = function reducer() {
       return _objectSpread({}, state, {
         user: action.user
       });
+
+    case NEW_COMMENT: // const newComments = {...state}.selectedVerse.comments
+    // return {...state, selectedVerse: {}}
 
     default:
       return state;

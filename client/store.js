@@ -8,6 +8,7 @@ const GOT_CHAPTER_VERSES = 'GOT_CHAPTER_VERSES';
 const GOT_USER = 'GOT_USER';
 const SELECTED_VERSE = 'SELECTED_VERSE';
 const LOGGED_IN_USER = 'LOGGED_IN_USER';
+const NEW_COMMENT = 'NEW_COMMENT';
 
 // action creators
 const gotVerses = (verses) => ({
@@ -17,6 +18,11 @@ const gotVerses = (verses) => ({
 const gotUser = (user) => ({
   type: GOT_USER,
   user
+})
+
+const gotComment = (comment) => ({
+  type: NEW_COMMENT,
+  comment
 })
 
 
@@ -62,6 +68,16 @@ export const fetchUser = () => {
   }
 }
 
+export const postComment = (comment, book, chapter, verse) => {
+  return async (dispatch) => {
+    try {
+      const {data} = await axios.post(`/api/${book}/${chapter}/${verse}`, comment);
+      const action = gotComment(data);
+      dispatch(action);
+    }catch(err) {console.log(err)}
+  }
+}
+
 export const logout = () => {
   return async dispatch => {
     try {
@@ -70,16 +86,6 @@ export const logout = () => {
     } catch(err) {console.log(err)}
   }
 }
-
-// export const getVerseComments = (book, chapter, verse) => {
-//   return async (dispatch) => {
-//     try {
-//       const {data} = await axios.get(`/api/${book}/${chapter}/${verse}`);
-//       const action = gotVerseComments(data);
-//       dispatch(action);
-//     }catch(err) {console.log(err)}
-//   }
-// }
 
 // initial state
 // should i eager load comments with my initial get request for verses? Or make an axios req everytime a verse is selected?
@@ -101,6 +107,9 @@ const reducer = (state = initialState, action) => {
       return {...state, selectedVerse: action.verse}
     case LOGGED_IN_USER:
       return {...state, user: action.user}
+    case NEW_COMMENT:
+      // const newComments = {...state}.selectedVerse.comments
+      // return {...state, selectedVerse: {}}
     default:
       return state;
   }
