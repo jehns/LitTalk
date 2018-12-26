@@ -19,9 +19,9 @@ const gotUser = (user) => ({
   user
 })
 
-export const selectVerse = (id) => ({
+export const selectVerse = (verse) => ({
   type: SELECTED_VERSE,
-  id
+  verse
 })
 
 export const loggedInUser = (user) => ({
@@ -73,7 +73,7 @@ export const logout = () => {
 const initialState = {
   verses: [],
   user: {},
-  selectedVerse: null
+  selectedVerse: {}
 }
 
 
@@ -85,7 +85,7 @@ const reducer = (state = initialState, action) => {
     case GOT_USER:
       return {...state, user: action.user}
     case SELECTED_VERSE:
-      return {...state, selectedVerse: action.id}
+      return {...state, selectedVerse: action.verse}
     case LOGGED_IN_USER:
     return {...state, user: action.user}
     default:

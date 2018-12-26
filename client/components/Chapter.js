@@ -8,9 +8,7 @@ import { Grid, Typography } from '@material-ui/core';
 class Chapter extends Component {
   constructor() {
     super()
-    this.state = {
-      comment: ''
-    }
+    this.state = {}
     this.handleClick = this.handleClick.bind(this)
   }
 
@@ -19,10 +17,8 @@ class Chapter extends Component {
   }
 
   handleClick(verse) {
-    this.props.selectVerse(verse.id);
-    this.setState({
-      comment: verse.comment
-    })
+    console.log(verse)
+    this.props.selectVerse(verse);
   }
 
   render() {
@@ -38,14 +34,14 @@ class Chapter extends Component {
           {this.props.verses ?
           <div>
             {this.props.verses.map((verse) => {
-              return <p key={verse.id} onClick={() => this.handleClick(verse)} className={this.props.selectedVerse === verse.id ? "orange" : ""}>{verse.content}</p>
+              return <p key={verse.id} onClick={() => this.handleClick(verse)} className={this.props.selectedVerse.id === verse.id ? "orange" : ""}>{verse.content}</p>
             })}
           </div>
 
           : <div>Something went wrong...</div>}
         </Grid>
         <Grid item sm style={{padding: 20}}>
-          {this.state.comment}
+          {this.props.selectedVerse.annotation}
         </Grid>
       </Grid>
     )
@@ -62,7 +58,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getChapterVerses: (book, chapter) => dispatch(getChapterVerses(book, chapter)),
-    selectVerse: (id) => dispatch(selectVerse(id))
+    selectVerse: (verse) => dispatch(selectVerse(verse))
   }
 }
 

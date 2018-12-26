@@ -136,9 +136,7 @@ function (_Component) {
     _classCallCheck(this, Chapter);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Chapter).call(this));
-    _this.state = {
-      comment: ''
-    };
+    _this.state = {};
     _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
@@ -151,10 +149,8 @@ function (_Component) {
   }, {
     key: "handleClick",
     value: function handleClick(verse) {
-      this.props.selectVerse(verse.id);
-      this.setState({
-        comment: verse.comment
-      });
+      console.log(verse);
+      this.props.selectVerse(verse);
     }
   }, {
     key: "render",
@@ -179,7 +175,7 @@ function (_Component) {
           onClick: function onClick() {
             return _this2.handleClick(verse);
           },
-          className: _this2.props.selectedVerse === verse.id ? "orange" : ""
+          className: _this2.props.selectedVerse.id === verse.id ? "orange" : ""
         }, verse.content);
       })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Something went wrong...")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Grid"], {
         item: true,
@@ -187,7 +183,7 @@ function (_Component) {
         style: {
           padding: 20
         }
-      }, this.state.comment));
+      }, this.props.selectedVerse.annotation));
     }
   }]);
 
@@ -206,8 +202,8 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     getChapterVerses: function getChapterVerses(book, chapter) {
       return dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_3__["getChapterVerses"])(book, chapter));
     },
-    selectVerse: function selectVerse(id) {
-      return dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_3__["selectVerse"])(id));
+    selectVerse: function selectVerse(verse) {
+      return dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_3__["selectVerse"])(verse));
     }
   };
 };
@@ -710,10 +706,10 @@ var gotUser = function gotUser(user) {
   };
 };
 
-var selectVerse = function selectVerse(id) {
+var selectVerse = function selectVerse(verse) {
   return {
     type: SELECTED_VERSE,
-    id: id
+    verse: verse
   };
 };
 var loggedInUser = function loggedInUser(user) {
@@ -898,7 +894,7 @@ var logout = function logout() {
 var initialState = {
   verses: [],
   user: {},
-  selectedVerse: null // reducer
+  selectedVerse: {} // reducer
 
 };
 
@@ -919,7 +915,7 @@ var reducer = function reducer() {
 
     case SELECTED_VERSE:
       return _objectSpread({}, state, {
-        selectedVerse: action.id
+        selectedVerse: action.verse
       });
 
     case LOGGED_IN_USER:
