@@ -27,8 +27,8 @@ const Verse = db.define('verse', {
       notEmpty: true
     }
   },
-  comment: {
-    type: Sequelize.TEXT,
+  annotation: {
+    type: Sequelize.TEXT
   }
 })
 

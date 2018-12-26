@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getUser } from '../store';
-import { InputLabel, Input, FormGroup, Button } from '@material-ui/core';
+import { InputLabel, Input, FormGroup, Button, Typography } from '@material-ui/core';
 
 
 
@@ -30,7 +30,6 @@ class Login extends Component {
   }
 
   handleChange(e) {
-    console.log(e.target.value)
     this.setState({
       [e.target.name]: e.target.value
     })
@@ -39,6 +38,8 @@ class Login extends Component {
   render() {
     return (
       <div>
+      <Typography variant="h2">Login</Typography>
+      <br />
         <FormGroup>
           <InputLabel htmlFor="email">Email</InputLabel>
           <Input name="email" type="text" onChange={this.handleChange} value={this.state.emailInput}/>

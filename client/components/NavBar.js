@@ -22,7 +22,7 @@ class NavBar extends Component {
       <div>
         {this.props.user.id ?
         <Grid container alignItems="center" justify="flex-end">
-        <Grid item><Typography>{this.props.user.name}</Typography></Grid><Grid item><Button onClick={this.handleClickLogout}>Logout</Button></Grid></Grid>
+        <Grid item><Button>{this.props.user.name}</Button></Grid><Grid item><Button onClick={this.handleClickLogout}>Logout</Button></Grid></Grid>
         :
         <Grid container alignItems="center" justify="flex-end">
         {this.props.history.location.pathname === '/' ? "" :
