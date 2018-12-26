@@ -17,7 +17,6 @@ class Chapter extends Component {
   }
 
   handleClick(verse) {
-    console.log(verse)
     this.props.selectVerse(verse);
   }
 
@@ -41,7 +40,19 @@ class Chapter extends Component {
           : <div>Something went wrong...</div>}
         </Grid>
         <Grid item sm style={{padding: 20}}>
-          {this.props.selectedVerse.annotation}
+          {this.props.selectedVerse.id ?
+          <div>
+            <Typography variant="body2">{this.props.selectedVerse.annotation}</Typography>
+            <br />
+            <br />
+            <Typography variant="h5">Comments</Typography>
+            {this.props.selectedVerse.comments.map(comment => {
+              return <Typography>{comment.content}</Typography>
+            })}
+          </div>
+          :
+          ""
+          }
         </Grid>
       </Grid>
     )

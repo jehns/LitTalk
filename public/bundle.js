@@ -149,7 +149,6 @@ function (_Component) {
   }, {
     key: "handleClick",
     value: function handleClick(verse) {
-      console.log(verse);
       this.props.selectVerse(verse);
     }
   }, {
@@ -183,7 +182,13 @@ function (_Component) {
         style: {
           padding: 20
         }
-      }, this.props.selectedVerse.annotation));
+      }, this.props.selectedVerse.id ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
+        variant: "body2"
+      }, this.props.selectedVerse.annotation), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
+        variant: "h5"
+      }, "Comments"), this.props.selectedVerse.comments.map(function (comment) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], null, comment.content);
+      })) : ""));
     }
   }]);
 
@@ -717,7 +722,7 @@ var loggedInUser = function loggedInUser(user) {
     type: LOGGED_IN_USER,
     user: user
   };
-}; // thunks
+}; // thunk creators
 
 var getChapterVerses = function getChapterVerses(book, chapter) {
   return (
@@ -889,7 +894,17 @@ var logout = function logout() {
       };
     }()
   );
-}; // initial state
+}; // export const getVerseComments = (book, chapter, verse) => {
+//   return async (dispatch) => {
+//     try {
+//       const {data} = await axios.get(`/api/${book}/${chapter}/${verse}`);
+//       const action = gotVerseComments(data);
+//       dispatch(action);
+//     }catch(err) {console.log(err)}
+//   }
+// }
+// initial state
+// should i eager load comments with my initial get request for verses? Or make an axios req everytime a verse is selected?
 
 var initialState = {
   verses: [],

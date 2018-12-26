@@ -19,6 +19,7 @@ const gotUser = (user) => ({
   user
 })
 
+
 export const selectVerse = (verse) => ({
   type: SELECTED_VERSE,
   verse
@@ -29,7 +30,8 @@ export const loggedInUser = (user) => ({
   user
 })
 
-// thunks
+
+// thunk creators
 export const getChapterVerses = (book, chapter) => {
   return async (dispatch) => {
     try {
@@ -69,7 +71,18 @@ export const logout = () => {
   }
 }
 
+// export const getVerseComments = (book, chapter, verse) => {
+//   return async (dispatch) => {
+//     try {
+//       const {data} = await axios.get(`/api/${book}/${chapter}/${verse}`);
+//       const action = gotVerseComments(data);
+//       dispatch(action);
+//     }catch(err) {console.log(err)}
+//   }
+// }
+
 // initial state
+// should i eager load comments with my initial get request for verses? Or make an axios req everytime a verse is selected?
 const initialState = {
   verses: [],
   user: {},
@@ -87,7 +100,7 @@ const reducer = (state = initialState, action) => {
     case SELECTED_VERSE:
       return {...state, selectedVerse: action.verse}
     case LOGGED_IN_USER:
-    return {...state, user: action.user}
+      return {...state, user: action.user}
     default:
       return state;
   }
