@@ -105,6 +105,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -149,9 +153,46 @@ function (_Component) {
 
   _createClass(Chapter, [{
     key: "componentDidMount",
-    value: function componentDidMount() {
-      this.props.getChapterVerses(this.props.match.params.book, this.props.match.params.chapter);
-    }
+    value: function () {
+      var _componentDidMount = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        var _this2 = this;
+
+        var verseSelect;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return this.props.getChapterVerses(this.props.match.params.book, this.props.match.params.chapter);
+
+              case 2:
+                console.log(this.props.match.params.verse, this.props.selectedVerse.verse, this.props.verses);
+
+                if (this.props.match.params.verse && !this.props.selectedVerse.verse || this.props.match.params.verse && this.props.selectedVerse.verse && this.props.match.params.verse !== this.props.selectedVerse.verse) {
+                  verseSelect = this.props.verses.find(function (verse) {
+                    return verse.verse === Number(_this2.props.match.params.verse);
+                  });
+                  this.props.selectVerse(verseSelect);
+                } else {
+                  this.props.selectVerse({});
+                }
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function componentDidMount() {
+        return _componentDidMount.apply(this, arguments);
+      }
+
+      return componentDidMount;
+    }()
   }, {
     key: "handleClick",
     value: function handleClick(verse) {
@@ -176,7 +217,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Grid"], {
         container: true
@@ -194,9 +235,9 @@ function (_Component) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
           key: verse.id,
           onClick: function onClick() {
-            return _this2.handleClick(verse);
+            return _this3.handleClick(verse);
           },
-          className: _this2.props.selectedVerse.id === verse.id ? "orange" : ""
+          className: _this3.props.selectedVerse && _this3.props.selectedVerse.id === verse.id ? "orange" : ""
         }, verse.content);
       })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Something went wrong...")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Grid"], {
         item: true,
@@ -204,7 +245,7 @@ function (_Component) {
         style: {
           padding: 20
         }
-      }, this.props.selectedVerse.id ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
+      }, this.props.selectedVerse && this.props.selectedVerse.id ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
         variant: "h5",
         style: {
           textDecoration: 'underline'
@@ -549,12 +590,12 @@ function (_Component) {
         component: _Login__WEBPACK_IMPORTED_MODULE_6__["default"]
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
         exact: true,
-        path: "/home",
-        component: _Home__WEBPACK_IMPORTED_MODULE_4__["default"]
+        path: "/login",
+        component: _Login__WEBPACK_IMPORTED_MODULE_6__["default"]
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
         exact: true,
-        path: "/:book",
-        component: _Chapter__WEBPACK_IMPORTED_MODULE_5__["default"]
+        path: "/home",
+        component: _Home__WEBPACK_IMPORTED_MODULE_4__["default"]
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
         exact: true,
         path: "/:book/:chapter",

@@ -16,8 +16,19 @@ class Chapter extends Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  componentDidMount () {
-    this.props.getChapterVerses(this.props.match.params.book, this.props.match.params.chapter)
+  async componentDidMount () {
+    await this.props.getChapterVerses(this.props.match.params.book, this.props.match.params.chapter)
+
+    console.log(this.props.match.params.verse, this.props.selectedVerse.verse, this.props.verses)
+
+    if ((this.props.match.params.verse && !this.props.selectedVerse.verse) || (this.props.match.params.verse && this.props.selectedVerse.verse && this.props.match.params.verse !== this.props.selectedVerse.verse)) {
+      const verseSelect = this.props.verses.find(verse => {
+        return verse.verse === Number(this.props.match.params.verse)
+      })
+      this.props.selectVerse(verseSelect)
+    } else {
+      this.props.selectVerse({});
+    }
   }
 
   handleClick(verse) {
@@ -54,14 +65,14 @@ class Chapter extends Component {
           {this.props.verses ?
           <div>
             {this.props.verses.map((verse) => {
-              return <p key={verse.id} onClick={() => this.handleClick(verse)} className={this.props.selectedVerse.id === verse.id ? "orange" : ""}>{verse.content}</p>
+              return <p key={verse.id} onClick={() => this.handleClick(verse)} className={this.props.selectedVerse && this.props.selectedVerse.id === verse.id ? "orange" : ""}>{verse.content}</p>
             })}
           </div>
-
           : <div>Something went wrong...</div>}
         </Grid>
+
         <Grid item sm style={{padding: 20}}>
-          {this.props.selectedVerse.id ?
+          {this.props.selectedVerse && this.props.selectedVerse.id ?
           <div>
             <Typography variant="h5" style={{textDecoration: 'underline'}}>Annotation</Typography>
             <br />
