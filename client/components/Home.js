@@ -18,9 +18,10 @@ class Home extends Component {
         <br />
         <br />
         <Typography variant="h4" style={{textDecoration: 'underline'}}>Books</Typography>
-        <NavLink to='/luke' style={{textDecoration: 'none'}}>
+        <NavLink to='/luke/1' style={{textDecoration: 'none'}}>
         <br />
-        <Typography variant="h5">Luke</Typography></NavLink>
+        <Typography variant="h5">Luke</Typography>
+        </NavLink>
       </div>
     )
   }

@@ -27,6 +27,8 @@ class Main extends Component {
           <Route exact path='/' component={Login}/>
           <Route exact path='/home' component={Home}/>
           <Route exact path='/:book' component={Chapter}/>
+          <Route exact path='/:book/:chapter' component={Chapter}/>
+          <Route exact path='/:book/:chapter/:verse' component={Chapter}/>
         </Switch>
       </div>
     )

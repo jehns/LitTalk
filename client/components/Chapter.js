@@ -17,11 +17,12 @@ class Chapter extends Component {
   }
 
   componentDidMount () {
-    this.props.getChapterVerses(this.props.match.params.book, 1)
+    this.props.getChapterVerses(this.props.match.params.book, this.props.match.params.chapter)
   }
 
   handleClick(verse) {
     this.props.selectVerse(verse);
+    this.props.history.push(`/${this.props.match.params.book}/${this.props.match.params.chapter}/${verse.verse}`)
   }
 
   handleClickButton(e) {
@@ -42,6 +43,7 @@ class Chapter extends Component {
   render() {
     return (
       <Grid container>
+
         <Grid container>
           <Typography variant="h1">
               {this.props.match.params.book.slice(0,1).toUpperCase() + this.props.match.params.book.slice(1)}
@@ -61,6 +63,8 @@ class Chapter extends Component {
         <Grid item sm style={{padding: 20}}>
           {this.props.selectedVerse.id ?
           <div>
+            <Typography variant="h5" style={{textDecoration: 'underline'}}>Annotation</Typography>
+            <br />
             <Typography variant="body2">{this.props.selectedVerse.annotation}</Typography>
             <br />
             <br />

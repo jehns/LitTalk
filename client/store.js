@@ -108,8 +108,8 @@ const reducer = (state = initialState, action) => {
     case LOGGED_IN_USER:
       return {...state, user: action.user}
     case NEW_COMMENT:
-      // const newComments = {...state}.selectedVerse.comments
-      // return {...state, selectedVerse: {}}
+      const newState = {...state}.selectedVerse.comments.push(action.comment)
+      return newState
     default:
       return state;
   }

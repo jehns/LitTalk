@@ -150,12 +150,13 @@ function (_Component) {
   _createClass(Chapter, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.props.getChapterVerses(this.props.match.params.book, 1);
+      this.props.getChapterVerses(this.props.match.params.book, this.props.match.params.chapter);
     }
   }, {
     key: "handleClick",
     value: function handleClick(verse) {
       this.props.selectVerse(verse);
+      this.props.history.push("/".concat(this.props.match.params.book, "/").concat(this.props.match.params.chapter, "/").concat(verse.verse));
     }
   }, {
     key: "handleClickButton",
@@ -204,6 +205,11 @@ function (_Component) {
           padding: 20
         }
       }, this.props.selectedVerse.id ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
+        variant: "h5",
+        style: {
+          textDecoration: 'underline'
+        }
+      }, "Annotation"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
         variant: "body2"
       }, this.props.selectedVerse.annotation), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
         variant: "h5",
@@ -321,7 +327,7 @@ function (_Component) {
           textDecoration: 'underline'
         }
       }, "Books"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["NavLink"], {
-        to: "/luke",
+        to: "/luke/1",
         style: {
           textDecoration: 'none'
         }
@@ -548,6 +554,14 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
         exact: true,
         path: "/:book",
+        component: _Chapter__WEBPACK_IMPORTED_MODULE_5__["default"]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
+        exact: true,
+        path: "/:book/:chapter",
+        component: _Chapter__WEBPACK_IMPORTED_MODULE_5__["default"]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
+        exact: true,
+        path: "/:book/:chapter/:verse",
         component: _Chapter__WEBPACK_IMPORTED_MODULE_5__["default"]
       })));
     }
@@ -1029,8 +1043,10 @@ var reducer = function reducer() {
         user: action.user
       });
 
-    case NEW_COMMENT: // const newComments = {...state}.selectedVerse.comments
-    // return {...state, selectedVerse: {}}
+    case NEW_COMMENT:
+      var newState = _objectSpread({}, state).selectedVerse.comments.push(action.comment);
+
+      return newState;
 
     default:
       return state;
