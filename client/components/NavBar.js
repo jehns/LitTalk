@@ -20,7 +20,7 @@ class NavBar extends Component {
   render() {
     return (
       <div>
-        {this.props.user.id ?
+        {this.props.user && this.props.user.id ?
         <Grid container alignItems="center" justify="flex-end">
         <Grid item><Button>{this.props.user.name}</Button></Grid><Grid item><Button onClick={this.handleClickLogout}>Logout</Button></Grid></Grid>
         :

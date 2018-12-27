@@ -2,25 +2,24 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
 import { getChapterVerses, selectVerse, postComment } from '../store';
-import { Grid, Typography, FormGroup, Input, InputLabel, Button } from '@material-ui/core';
+import { Grid, Typography, FormGroup, Input, InputLabel, Button, DialogContentText } from '@material-ui/core';
 
 
 class Chapter extends Component {
   constructor() {
     super()
     this.state = {
-      newComment: ''
+      newComment: '',
+      showCommentsButton: false
     }
     this.handleClick = this.handleClick.bind(this)
     this.handleClickButton = this.handleClickButton.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handleCommentsButton = this.handleCommentsButton.bind(this)
   }
 
   async componentDidMount () {
     await this.props.getChapterVerses(this.props.match.params.book, this.props.match.params.chapter)
-
-    console.log(this.props.match.params.verse, this.props.selectedVerse.verse, this.props.verses)
-
     if ((this.props.match.params.verse && !this.props.selectedVerse.verse) || (this.props.match.params.verse && this.props.selectedVerse.verse && this.props.match.params.verse !== this.props.selectedVerse.verse)) {
       const verseSelect = this.props.verses.find(verse => {
         return verse.verse === Number(this.props.match.params.verse)
@@ -42,7 +41,16 @@ class Chapter extends Component {
       content: this.state.newComment,
       userId: this.props.user.id,
       verseId: this.props.selectedVerse.id
-    }, this.props.match.params.book, this.props.selectedVerse.chapter, this.props.selectedVerse.verse)
+    }, this.props.match.params.book)
+    this.setState({
+      newComment: ''
+    })
+  }
+
+  handleCommentsButton() {
+    this.setState({
+      showCommentsButton: !this.state.showCommentsButton
+    })
   }
 
   handleChange(e) {
@@ -71,6 +79,8 @@ class Chapter extends Component {
           : <div>Something went wrong...</div>}
         </Grid>
 
+
+
         <Grid item sm style={{padding: 20}}>
           {this.props.selectedVerse && this.props.selectedVerse.id ?
           <div>
@@ -79,8 +89,13 @@ class Chapter extends Component {
             <Typography variant="body2">{this.props.selectedVerse.annotation}</Typography>
             <br />
             <br />
-            <Typography variant="h5" style={{textDecoration: 'underline'}}>Comments</Typography>
+
+            <Button onClick={this.handleCommentsButton}><Typography variant="h5" style={{textDecoration: 'underline'}}>Comments</Typography></Button>
+            {this.state.showCommentsButton ?
+            <div>
             <br />
+
+            {console.log('comments', this.props.selectedVerse.comments)}
             {this.props.selectedVerse.comments.map(comment => {
               return (
               <div key={comment.id}>
@@ -100,12 +115,15 @@ class Chapter extends Component {
             :
             ""
             }
-
+            </div>
+            : ""}
           </div>
           :
           ""
           }
+
         </Grid>
+
       </Grid>
     )
   }
@@ -123,7 +141,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getChapterVerses: (book, chapter) => dispatch(getChapterVerses(book, chapter)),
     selectVerse: (verse) => dispatch(selectVerse(verse)),
-    postComment: (comment, book, chapter, verse) => dispatch(postComment(comment))
+    postComment: (comment, book) => dispatch(postComment(comment, book))
   }
 }
 

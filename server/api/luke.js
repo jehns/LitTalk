@@ -19,10 +19,19 @@ router.get('/:chapter', async (req, res, next) => {
   } catch(err) {next(err)}
 })
 
-router.post('/:chapter/:verse', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   try {
     const comment = await Comment.create(req.body)
-    res.json(comment)
+    const returnComment = await Comment.findOne({
+      where: {
+        id: comment.id
+      },
+      include: [
+        {model: User},
+        {model: Verse}
+      ]
+    })
+    res.json(returnComment)
   } catch(err) {next(err)}
 })
 

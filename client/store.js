@@ -68,10 +68,11 @@ export const fetchUser = () => {
   }
 }
 
-export const postComment = (comment, book, chapter, verse) => {
+export const postComment = (comment, book) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.post(`/api/${book}/${chapter}/${verse}`, comment);
+      const {data} = await axios.post(`/api/${book}`, comment);
+      console.log(data)
       const action = gotComment(data);
       dispatch(action);
     }catch(err) {console.log(err)}
@@ -108,8 +109,7 @@ const reducer = (state = initialState, action) => {
     case LOGGED_IN_USER:
       return {...state, user: action.user}
     case NEW_COMMENT:
-      const newState = {...state}.selectedVerse.comments.push(action.comment)
-      return newState
+      return {...state, selectedVerse: {...state.selectedVerse, comments: [...state.selectedVerse.comments, action.comment]}}
     default:
       return state;
   }

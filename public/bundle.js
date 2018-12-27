@@ -143,11 +143,13 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Chapter).call(this));
     _this.state = {
-      newComment: ''
+      newComment: '',
+      showCommentsButton: false
     };
     _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleClickButton = _this.handleClickButton.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleCommentsButton = _this.handleCommentsButton.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
@@ -168,8 +170,6 @@ function (_Component) {
                 return this.props.getChapterVerses(this.props.match.params.book, this.props.match.params.chapter);
 
               case 2:
-                console.log(this.props.match.params.verse, this.props.selectedVerse.verse, this.props.verses);
-
                 if (this.props.match.params.verse && !this.props.selectedVerse.verse || this.props.match.params.verse && this.props.selectedVerse.verse && this.props.match.params.verse !== this.props.selectedVerse.verse) {
                   verseSelect = this.props.verses.find(function (verse) {
                     return verse.verse === Number(_this2.props.match.params.verse);
@@ -179,7 +179,7 @@ function (_Component) {
                   this.props.selectVerse({});
                 }
 
-              case 4:
+              case 3:
               case "end":
                 return _context.stop();
             }
@@ -207,7 +207,17 @@ function (_Component) {
         content: this.state.newComment,
         userId: this.props.user.id,
         verseId: this.props.selectedVerse.id
-      }, this.props.match.params.book, this.props.selectedVerse.chapter, this.props.selectedVerse.verse);
+      }, this.props.match.params.book);
+      this.setState({
+        newComment: ''
+      });
+    }
+  }, {
+    key: "handleCommentsButton",
+    value: function handleCommentsButton() {
+      this.setState({
+        showCommentsButton: !this.state.showCommentsButton
+      });
     }
   }, {
     key: "handleChange",
@@ -252,12 +262,14 @@ function (_Component) {
         }
       }, "Annotation"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
         variant: "body2"
-      }, this.props.selectedVerse.annotation), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
+      }, this.props.selectedVerse.annotation), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Button"], {
+        onClick: this.handleCommentsButton
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
         variant: "h5",
         style: {
           textDecoration: 'underline'
         }
-      }, "Comments"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), this.props.selectedVerse.comments.map(function (comment) {
+      }, "Comments")), this.state.showCommentsButton ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), console.log('comments', this.props.selectedVerse.comments), this.props.selectedVerse.comments.map(function (comment) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: comment.id
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
@@ -270,7 +282,7 @@ function (_Component) {
         value: this.state.newComment
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Button"], {
         onClick: this.handleClickButton
-      }, "Post Comment")) : "") : ""));
+      }, "Post Comment")) : "") : "") : ""));
     }
   }]);
 
@@ -293,8 +305,8 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     selectVerse: function selectVerse(verse) {
       return dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_3__["selectVerse"])(verse));
     },
-    postComment: function postComment(comment, book, chapter, verse) {
-      return dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_3__["postComment"])(comment));
+    postComment: function postComment(comment, book) {
+      return dispatch(Object(_store__WEBPACK_IMPORTED_MODULE_3__["postComment"])(comment, book));
     }
   };
 };
@@ -690,7 +702,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.props.user.id ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Grid"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.props.user && this.props.user.id ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Grid"], {
         container: true,
         alignItems: "center",
         justify: "flex-end"
@@ -782,6 +794,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var redux_logger__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(redux_logger__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -967,7 +987,7 @@ var fetchUser = function fetchUser() {
     }()
   );
 };
-var postComment = function postComment(comment, book, chapter, verse) {
+var postComment = function postComment(comment, book) {
   return (
     /*#__PURE__*/
     function () {
@@ -982,27 +1002,28 @@ var postComment = function postComment(comment, book, chapter, verse) {
               case 0:
                 _context4.prev = 0;
                 _context4.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("/api/".concat(book, "/").concat(chapter, "/").concat(verse), comment);
+                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("/api/".concat(book), comment);
 
               case 3:
                 _ref8 = _context4.sent;
                 data = _ref8.data;
+                console.log(data);
                 action = gotComment(data);
                 dispatch(action);
-                _context4.next = 12;
+                _context4.next = 13;
                 break;
 
-              case 9:
-                _context4.prev = 9;
+              case 10:
+                _context4.prev = 10;
                 _context4.t0 = _context4["catch"](0);
                 console.log(_context4.t0);
 
-              case 12:
+              case 13:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, this, [[0, 9]]);
+        }, _callee4, this, [[0, 10]]);
       }));
 
       return function (_x4) {
@@ -1085,9 +1106,11 @@ var reducer = function reducer() {
       });
 
     case NEW_COMMENT:
-      var newState = _objectSpread({}, state).selectedVerse.comments.push(action.comment);
-
-      return newState;
+      return _objectSpread({}, state, {
+        selectedVerse: _objectSpread({}, state.selectedVerse, {
+          comments: [].concat(_toConsumableArray(state.selectedVerse.comments), [action.comment])
+        })
+      });
 
     default:
       return state;
