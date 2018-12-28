@@ -90,7 +90,7 @@ class Chapter extends Component {
             <br />
             <br />
 
-            <Button onClick={this.handleCommentsButton}><Typography variant="h5" style={{textDecoration: 'underline'}}>Comments</Typography></Button>
+            <Button onClick={this.handleCommentsButton} fullWidth={true} size='large'>Comments</Button>
             {this.state.showCommentsButton ?
             <div>
             <br />

@@ -35,21 +35,5 @@ router.post('/', async (req, res, next) => {
   } catch(err) {next(err)}
 })
 
-// router.get('/:chapter/:verse', async (req, res, next) => {
-//   try {
-//     const comments = await Comment.findAll({
-//       include: [{
-//         model: Verse,
-//         where: {
-//           chapter: req.params.chapter,
-//           verse: req.params.verse
-//         }
-//         },
-//       ]
-//     })
-
-//     res.json(comments)
-//   } catch(err) {next(err)}
-// })
 
 module.exports = router

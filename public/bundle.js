@@ -263,13 +263,10 @@ function (_Component) {
       }, "Annotation"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
         variant: "body2"
       }, this.props.selectedVerse.annotation), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Button"], {
-        onClick: this.handleCommentsButton
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
-        variant: "h5",
-        style: {
-          textDecoration: 'underline'
-        }
-      }, "Comments")), this.state.showCommentsButton ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), console.log('comments', this.props.selectedVerse.comments), this.props.selectedVerse.comments.map(function (comment) {
+        onClick: this.handleCommentsButton,
+        fullWidth: true,
+        size: "large"
+      }, "Comments"), this.state.showCommentsButton ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), console.log('comments', this.props.selectedVerse.comments), this.props.selectedVerse.comments.map(function (comment) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: comment.id
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Typography"], {
@@ -1007,23 +1004,22 @@ var postComment = function postComment(comment, book) {
               case 3:
                 _ref8 = _context4.sent;
                 data = _ref8.data;
-                console.log(data);
                 action = gotComment(data);
                 dispatch(action);
-                _context4.next = 13;
+                _context4.next = 12;
                 break;
 
-              case 10:
-                _context4.prev = 10;
+              case 9:
+                _context4.prev = 9;
                 _context4.t0 = _context4["catch"](0);
                 console.log(_context4.t0);
 
-              case 13:
+              case 12:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, this, [[0, 10]]);
+        }, _callee4, this, [[0, 9]]);
       }));
 
       return function (_x4) {

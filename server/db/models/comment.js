@@ -11,8 +11,8 @@ const Comment = db.define('comment', {
     }
   },
   date: {
-    type: Sequelize.DATE,
-    defaultValue: new Date()
+    type: Sequelize.STRING,
+    defaultValue: (new Date()).toDateString()
   }
 })
 

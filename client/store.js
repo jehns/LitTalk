@@ -72,7 +72,6 @@ export const postComment = (comment, book) => {
   return async (dispatch) => {
     try {
       const {data} = await axios.post(`/api/${book}`, comment);
-      console.log(data)
       const action = gotComment(data);
       dispatch(action);
     }catch(err) {console.log(err)}
