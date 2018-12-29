@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getUser } from '../store';
-import { InputLabel, Input, FormGroup, Button, Typography } from '@material-ui/core';
+import { InputLabel, Input, FormGroup, Button, Typography, Grid } from '@material-ui/core';
 
 
 

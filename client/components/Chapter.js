@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
 import { getChapterVerses, selectVerse, postComment } from '../store';
 import { Grid, Typography, FormGroup, Input, InputLabel, Button, DialogContentText } from '@material-ui/core';
+import Footer from './Footer';
+
 
 
 class Chapter extends Component {
@@ -16,10 +18,12 @@ class Chapter extends Component {
     this.handleClickButton = this.handleClickButton.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleCommentsButton = this.handleCommentsButton.bind(this)
+    this.handleChangeFooter = this.handleChangeFooter.bind(this)
   }
 
   async componentDidMount () {
     await this.props.getChapterVerses(this.props.match.params.book, this.props.match.params.chapter)
+
     if ((this.props.match.params.verse && !this.props.selectedVerse.verse) || (this.props.match.params.verse && this.props.selectedVerse.verse && this.props.match.params.verse !== this.props.selectedVerse.verse)) {
       const verseSelect = this.props.verses.find(verse => {
         return verse.verse === Number(this.props.match.params.verse)
@@ -27,6 +31,12 @@ class Chapter extends Component {
       this.props.selectVerse(verseSelect)
     } else {
       this.props.selectVerse({});
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.match.params.chapter !== prevProps.match.params.chapter) {
+      this.props.getChapterVerses(this.props.match.params.book, this.props.match.params.chapter)
     }
   }
 
@@ -59,8 +69,19 @@ class Chapter extends Component {
     })
   }
 
+  handleChangeFooter(e, value) {
+    if (value === 'home') {
+      this.props.history.push('/home')
+    } else if (value === 'last') {
+      this.props.history.push(`/${this.props.match.params.book}/${Number(this.props.match.params.chapter) - 1}`)
+    } else if (value === 'next') {
+      this.props.history.push(`/${this.props.match.params.book}/${Number(this.props.match.params.chapter) + 1}`)
+    }
+  }
+
   render() {
     return (
+      <div>
       <Grid container>
 
         <Grid container>
@@ -125,6 +146,8 @@ class Chapter extends Component {
         </Grid>
 
       </Grid>
+      <Footer onChange={this.handleChangeFooter}/>
+      </div>
     )
   }
 }

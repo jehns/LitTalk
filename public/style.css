@@ -11,3 +11,10 @@ header {
 p:hover {
 cursor: pointer;
 }
+
+
+.stickToBottom {
+  width: '100%';
+  position: 'fixed';
+  bottom: 0;
+}

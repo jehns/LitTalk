@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchUser } from '../store';
-import {HashRouter, Switch, Route, withRouter} from 'react-router-dom'
-import Home from './Home'
-import Chapter from './Chapter'
+import {HashRouter, Switch, Route, withRouter} from 'react-router-dom';
+import Home from './Home';
+import Chapter from './Chapter';
 import Login from './Login';
 import NavBar from './NavBar';
+
+
 
 
 class Main extends Component {
@@ -30,6 +32,7 @@ class Main extends Component {
           <Route exact path='/:book/:chapter' component={Chapter}/>
           <Route exact path='/:book/:chapter/:verse' component={Chapter}/>
         </Switch>
+
       </div>
     )
   }
