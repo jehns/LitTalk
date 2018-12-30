@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { logout } from '../store';
 import { NavLink, withRouter } from 'react-router-dom'
-import { AppBar, Typography, Grid, Button} from '@material-ui/core';
+import { AppBar, Typography, Grid, Button, Avatar} from '@material-ui/core';
 
 
 class NavBar extends Component {
@@ -10,11 +10,15 @@ class NavBar extends Component {
     super()
     this.state = {}
     this.handleClickLogout = this.handleClickLogout.bind(this)
+    this.handleClickUser = this.handleClickUser.bind(this)
   }
 
   handleClickLogout() {
     this.props.logout()
     this.props.history.push('/')
+  }
+  handleClickUser() {
+    this.props.history.push('/profile')
   }
 
   render() {
@@ -22,7 +26,16 @@ class NavBar extends Component {
       <div>
         {this.props.user && this.props.user.id ?
         <Grid container alignItems="center" justify="flex-end">
-        <Grid item><Button>{this.props.user.name}</Button></Grid><Grid item><Button onClick={this.handleClickLogout}>Logout</Button></Grid></Grid>
+          <Grid item>
+            <Avatar src={`${this.props.user.imageUrl}`}/>
+          </Grid>
+          <Grid item>
+          <Button onClick={this.handleClickUser}>{this.props.user.name}</Button>
+          </Grid>
+          <Grid item>
+          <Button onClick={this.handleClickLogout}>Logout</Button>
+          </Grid>
+        </Grid>
         :
         <Grid container alignItems="center" justify="flex-end">
         {this.props.history.location.pathname === '/' ? "" :

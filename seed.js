@@ -1,9 +1,10 @@
 const {db, Book, Verse, User, Comment} = require('./server/db')
 
 const users = [
-  {name: 'Stuart', email: 'sj@gmail.com', password: '123'},
-  {name: 'Phil', email: 'pw@gmail.com', password: 'abc'},
-  {name: 'Brendan', email: 'wow@hotmail.com', password: 'password'},
+  {name: 'Stuart', email: 'sj@gmail.com', password: '123', biography: "I love eveything about jesus. he dies for me sins and i am the lovely mcdonalds french fry."},
+  {name: 'Phil', email: 'pw@gmail.com', password: '123', biography: "Hello I am from New Found Land and have a bunch of cool rocks to share with the class. God is my best friend except for when he screws me over.", imageUrl: 'https://image.flaticon.com/icons/svg/145/145859.svg'},
+  {name: 'Brendan', email: 'bl@gmail.com', password: '123', biography: "One day you will all see how powerful I am. Don't take my pony obsession for granted.", imageUrl: 'https://image.flaticon.com/icons/png/512/145/145855.png'},
+  {name: 'Heather', email: 'hs@gmail.com', password: '123', biography: "Hi, Im Heather - add me on Facebook!", imageUrl: 'https://image.flaticon.com/icons/svg/145/145864.svg'},
 ];
 
 const books = [
@@ -21,8 +22,9 @@ const verses = [
 const comments = [
   {content: "Whales are just like jesus aren't they?", userId: 1, verseId: 1,},
   {content: "Neo wouldn't talk if zion was under attack.", userId: 2, verseId: 1,},
+  {content: "Morpheus was the one.", userId: 4, verseId: 1,},
   {content: "I think god is stupid just like my horse", userId: 1, verseId: 2, },
-  {content: "In no time ill be no time!", userId: 2, verseId: 2,},
+  {content: "In no time ill be no time!", userId: 4, verseId: 2,},
   {content: "I love ponies. but jesus is my only pony.", userId: 3, verseId: 3,},
   {content: "What does a guy gatta do to get some JESUS, am i right?", userId: 3, verseId: 4,},
   {content: "You're right", userId: 1, verseId: 4,}

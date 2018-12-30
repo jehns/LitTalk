@@ -25,9 +25,12 @@ const User = db.define('user', {
       notEmpty: true,
     }
   },
+  biography: {
+    type: Sequelize.TEXT
+  },
   imageUrl: {
     type: Sequelize.STRING,
-    defaultValue: 'https://c7.uihere.com/files/340/946/334/avatar-user-computer-icons-software-developer-avatar.jpg'
+    defaultValue: 'https://image.flaticon.com/icons/svg/145/145867.svg'
   }
 
 })

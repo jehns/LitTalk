@@ -6,6 +6,7 @@ import Home from './Home';
 import Chapter from './Chapter';
 import Login from './Login';
 import NavBar from './NavBar';
+import UserProfile from './UserProfile'
 
 
 
@@ -29,6 +30,7 @@ class Main extends Component {
           <Route exact path='/' component={Login}/>
           <Route exact path='/login' component={Login}/>
           <Route exact path='/home' component={Home}/>
+          <Route exact path='/profile' component={UserProfile}/>
           <Route exact path='/:book/:chapter' component={Chapter}/>
           <Route exact path='/:book/:chapter/:verse' component={Chapter}/>
         </Switch>

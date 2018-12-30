@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
 import { getChapterVerses, selectVerse, postComment } from '../store';
-import { Grid, Typography, FormGroup, Input, InputLabel, Button, DialogContentText } from '@material-ui/core';
+import { Grid, Typography, FormGroup, Input, InputLabel, Button, DialogContentText, Avatar } from '@material-ui/core';
 import Footer from './Footer';
 
 
@@ -116,14 +116,26 @@ class Chapter extends Component {
             <div>
             <br />
 
-            {console.log('comments', this.props.selectedVerse.comments)}
             {this.props.selectedVerse.comments.map(comment => {
               return (
               <div key={comment.id}>
-                <Typography variant="h6">{comment.user.name}</Typography>
-                <Typography>{comment.content}</Typography>
-                <Typography>{comment.date}</Typography>
+              <Grid container>
+                <Grid item>
+                  <Avatar src={`${comment.user.imageUrl}`}/>
+                </Grid>
+                <Grid item>
+                  <Typography variant="h6">{comment.user.name}</Typography>
+                </Grid>
+              </Grid>
 
+                <Grid container>
+                  <Typography variant="body1">{comment.content}</Typography>
+                </Grid>
+
+                <Grid container>
+                  <Typography variant="body2">{comment.date}</Typography>
+                </Grid>
+                <br />
               </div>
               )
             })}
