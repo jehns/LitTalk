@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getUser } from '../store';
-import { InputLabel, Input, FormGroup, Button, Typography, Grid } from '@material-ui/core';
+import { InputLabel, Input, FormGroup, Button, Typography, Grid, TextField } from '@material-ui/core';
 
 
 
@@ -26,7 +26,7 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password
     })
-    this.props.history.push('/home')
+    this.props.history.push('/')
   }
 
   handleChange(e) {
@@ -38,15 +38,30 @@ class Login extends Component {
   render() {
     return (
       <div>
-      <Typography variant="h2">Login</Typography>
-      <br />
-        <FormGroup>
-          <InputLabel htmlFor="email">Email</InputLabel>
-          <Input name="email" type="text" onChange={this.handleChange} value={this.state.emailInput}/>
-          <InputLabel htmlFor="password">Password</InputLabel>
-          <Input name="password" type="text" onChange={this.handleChange} value={this.state.passwordInput}/>
-          <Button onClick={this.handleSubmit}>Submit</Button>
-        </FormGroup>
+        <Grid container
+          direction="column"
+          alignItems="center"
+          justify="center"
+          >
+          <Typography variant="h2" color="textPrimary">Skeptic's Annotated Bible</Typography>
+        </Grid>
+
+        <Grid container
+          spacing={0}
+          direction="column"
+          alignItems="center"
+          justify="center"
+          style={{ minHeight: '100vh' }}
+        >
+
+          <Typography variant="h2">Login</Typography>
+          <br />
+          <FormGroup>
+              <TextField label="email" name="email" type="text" onChange={this.handleChange} value={this.state.emailInput}/>
+              <TextField label="password" name="password" type="text" onChange={this.handleChange} value={this.state.passwordInput}/>
+              <Button onClick={this.handleSubmit}>Submit</Button>
+          </FormGroup>
+        </Grid>
       </div>
     )
   }

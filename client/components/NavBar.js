@@ -15,7 +15,7 @@ class NavBar extends Component {
 
   handleClickLogout() {
     this.props.logout()
-    this.props.history.push('/')
+    this.props.history.push('/login')
   }
   handleClickUser() {
     this.props.history.push('/profile')
@@ -38,8 +38,8 @@ class NavBar extends Component {
         </Grid>
         :
         <Grid container alignItems="center" justify="flex-end">
-        {this.props.history.location.pathname === '/' ? "" :
-          <NavLink to="/">
+        {this.props.history.location.pathname === '/login' ? "" :
+          <NavLink to="/login">
             <Button>Log In</Button>
           </NavLink>}
         </Grid>}

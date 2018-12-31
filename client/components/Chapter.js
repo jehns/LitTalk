@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
 import { getChapterVerses, selectVerse, postComment } from '../store';
 import { Grid, Typography, FormGroup, Input, InputLabel, Button, DialogContentText, Avatar } from '@material-ui/core';
+import { Cancel } from '@material-ui/icons';
 import Footer from './Footer';
 
 
@@ -71,7 +72,7 @@ class Chapter extends Component {
 
   handleChangeFooter(e, value) {
     if (value === 'home') {
-      this.props.history.push('/home')
+      this.props.history.push('/')
     } else if (value === 'last') {
       this.props.history.push(`/${this.props.match.params.book}/${Number(this.props.match.params.chapter) - 1}`)
     } else if (value === 'next') {
@@ -93,8 +94,9 @@ class Chapter extends Component {
         <Grid item sm style={{padding: 20}}>
           {this.props.verses ?
           <div>
+            <Typography variant="h5">Chapter {this.props.match.params.chapter}</Typography>
             {this.props.verses.map((verse) => {
-              return <p key={verse.id} onClick={() => this.handleClick(verse)} className={this.props.selectedVerse && this.props.selectedVerse.id === verse.id ? "orange" : ""}>{verse.content}</p>
+              return <p key={verse.id} onClick={() => this.handleClick(verse)} className={this.props.selectedVerse && this.props.selectedVerse.id === verse.id ? "orange box" : "box"}>{verse.content}</p>
             })}
           </div>
           : <div>Something went wrong...</div>}
@@ -103,9 +105,9 @@ class Chapter extends Component {
 
 
         <Grid item sm style={{padding: 20}}>
+          <Typography variant="h5" style={{textDecoration: 'underline'}}>Annotation</Typography>
           {this.props.selectedVerse && this.props.selectedVerse.id ?
           <div>
-            <Typography variant="h5" style={{textDecoration: 'underline'}}>Annotation</Typography>
             <br />
             <Typography variant="body2">{this.props.selectedVerse.annotation}</Typography>
             <br />
@@ -126,6 +128,10 @@ class Chapter extends Component {
                 <Grid item>
                   <Typography variant="h6">{comment.user.name}</Typography>
                 </Grid>
+                <Grid item>
+                  <Cancel />
+                </Grid>
+
               </Grid>
 
                 <Grid container>

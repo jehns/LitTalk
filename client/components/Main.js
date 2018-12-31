@@ -27,9 +27,8 @@ class Main extends Component {
         <NavBar />
 
         <Switch>
-          <Route exact path='/' component={Login}/>
+          <Route exact path='/' component={Home}/>
           <Route exact path='/login' component={Login}/>
-          <Route exact path='/home' component={Home}/>
           <Route exact path='/profile' component={UserProfile}/>
           <Route exact path='/:book/:chapter' component={Chapter}/>
           <Route exact path='/:book/:chapter/:verse' component={Chapter}/>
