@@ -125,22 +125,25 @@ class Chapter extends Component {
 
             {this.props.selectedVerse.comments.map(comment => {
               return (
+
               <div key={comment.id}>
-              <Grid container alignContent="center">
-                <Grid item>
+              <Grid container alignItems="center" spacing={24} direction="row">
+                <Grid item md>
+                  <Grid container direction="row" alignItems="center">
                   <Avatar src={`${comment.user.imageUrl}`}/>
-                </Grid>
-                <Grid item>
                   <Typography variant="h5">{comment.user.name}</Typography>
+                  </Grid>
                 </Grid>
                 {comment.user.id === this.props.user.id ?
-                <Grid item>
-                  <IconButton onClick={() => this.handleDeleteCommentButton(comment.id)}>
-                    <Cancel />
-                  </IconButton>
-                  <IconButton>
-                    <Edit />
-                  </IconButton>
+                <Grid item md>
+                  <Grid container alignItems="center" justify="flex-end">
+                    <IconButton onClick={() => this.handleDeleteCommentButton(comment.id)}>
+                      <Cancel />
+                    </IconButton>
+                    <IconButton>
+                      <Edit />
+                    </IconButton>
+                  </Grid>
                 </Grid>
                 : ""}
 
@@ -151,7 +154,7 @@ class Chapter extends Component {
                 </Grid>
 
                 <Grid container>
-                  <Typography variant="body2">{comment.date}</Typography>
+                  <Typography variant="caption" className="italics">{comment.date}</Typography>
                 </Grid>
                 <br />
               </div>
