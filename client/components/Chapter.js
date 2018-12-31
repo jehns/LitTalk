@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
-import { getChapterVerses, selectVerse, postComment } from '../store';
-import { Grid, Typography, FormGroup, Input, InputLabel, Button, DialogContentText, Avatar } from '@material-ui/core';
-import { Cancel } from '@material-ui/icons';
+import { getChapterVerses, selectVerse, postComment, deleteComment } from '../store';
+import { Grid, Typography, FormGroup, Input, InputLabel, Button, DialogContentText, Avatar, IconButton, Icon } from '@material-ui/core';
+import { Cancel, Edit } from '@material-ui/icons';
 import Footer from './Footer';
 
 
@@ -20,6 +20,7 @@ class Chapter extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleCommentsButton = this.handleCommentsButton.bind(this)
     this.handleChangeFooter = this.handleChangeFooter.bind(this)
+    this.handleDeleteCommentButton = this.handleDeleteCommentButton.bind(this)
   }
 
   async componentDidMount () {
@@ -80,6 +81,10 @@ class Chapter extends Component {
     }
   }
 
+  handleDeleteCommentButton(commentId) {
+    this.props.deleteComment(this.props.match.params.book, commentId)
+  }
+
   render() {
     return (
       <div>
@@ -121,16 +126,23 @@ class Chapter extends Component {
             {this.props.selectedVerse.comments.map(comment => {
               return (
               <div key={comment.id}>
-              <Grid container>
+              <Grid container alignContent="center">
                 <Grid item>
                   <Avatar src={`${comment.user.imageUrl}`}/>
                 </Grid>
                 <Grid item>
-                  <Typography variant="h6">{comment.user.name}</Typography>
+                  <Typography variant="h5">{comment.user.name}</Typography>
                 </Grid>
+                {comment.user.id === this.props.user.id ?
                 <Grid item>
-                  <Cancel />
+                  <IconButton onClick={() => this.handleDeleteCommentButton(comment.id)}>
+                    <Cancel />
+                  </IconButton>
+                  <IconButton>
+                    <Edit />
+                  </IconButton>
                 </Grid>
+                : ""}
 
               </Grid>
 
@@ -182,7 +194,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getChapterVerses: (book, chapter) => dispatch(getChapterVerses(book, chapter)),
     selectVerse: (verse) => dispatch(selectVerse(verse)),
-    postComment: (comment, book) => dispatch(postComment(comment, book))
+    postComment: (comment, book) => dispatch(postComment(comment, book)),
+    deleteComment: (book, commentId) => dispatch(deleteComment(book, commentId))
   }
 }
 

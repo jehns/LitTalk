@@ -35,5 +35,21 @@ router.post('/', async (req, res, next) => {
   } catch(err) {next(err)}
 })
 
+router.delete('/:commentId', async (req, res, next) => {
+  console.log(req.params.commentId)
+  try {
+    const deletedComment = await Comment.destroy({
+      where: {
+        id: req.params.commentId
+      }
+    })
+    if (deletedComment === 1) {
+      res.json(req.params.commentId)
+    } else {
+      res.sendStatus(409)
+    }
+  } catch(err) {next(err)}
+})
+
 
 module.exports = router

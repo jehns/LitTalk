@@ -9,12 +9,14 @@ const GOT_USER = 'GOT_USER';
 const SELECTED_VERSE = 'SELECTED_VERSE';
 const LOGGED_IN_USER = 'LOGGED_IN_USER';
 const NEW_COMMENT = 'NEW_COMMENT';
+const DELETED_COMMENT = 'DELETED_COMMENT'
 
 // action creators
 const gotVerses = (verses) => ({
   type: GOT_CHAPTER_VERSES,
   verses
 })
+
 const gotUser = (user) => ({
   type: GOT_USER,
   user
@@ -23,6 +25,11 @@ const gotUser = (user) => ({
 const gotComment = (comment) => ({
   type: NEW_COMMENT,
   comment
+})
+
+const deletedComment = (commentId) => ({
+  type: DELETED_COMMENT,
+  commentId
 })
 
 
@@ -78,6 +85,17 @@ export const postComment = (comment, book) => {
   }
 }
 
+export const deleteComment = (book, commentId) => {
+  return async (dispatch) => {
+    try {
+      const {data} = await axios.delete(`/api/${book}/${commentId}`);
+      console.log('returned', data)
+      const action = deletedComment(data);
+      dispatch(action);
+    }catch(err) {console.log(err)}
+  }
+}
+
 export const logout = () => {
   return async dispatch => {
     try {
@@ -109,6 +127,12 @@ const reducer = (state = initialState, action) => {
       return {...state, user: action.user}
     case NEW_COMMENT:
       return {...state, selectedVerse: {...state.selectedVerse, comments: [...state.selectedVerse.comments, action.comment]}}
+    case DELETED_COMMENT:
+      const filteredComments = [...state.selectedVerse.comments].filter(comment => {
+        return comment.id !== Number(action.commentId)
+      })
+      console.log('filteredComments', filteredComments)
+      return {...state, selectedVerse: {...state.selectedVerse, comments: filteredComments}}
     default:
       return state;
   }
