@@ -85,6 +85,10 @@ class Chapter extends Component {
     this.props.deleteComment(this.props.match.params.book, commentId)
   }
 
+  // handleEditCommentButton(commentId) {
+  //   this.props.deleteComment(this.props.match.params.book, commentId)
+  // }
+
   render() {
     return (
       <div>

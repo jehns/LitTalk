@@ -35,6 +35,32 @@ router.post('/', async (req, res, next) => {
   } catch(err) {next(err)}
 })
 
+router.put('/', async (req, res, next) => {
+  try {
+    const [numberOfAffectedRows, affectedRows]= await Comment.update({
+      content: req.body.content,
+      }, {
+        where: {
+          id: req.body.id
+        },
+      returning: true,
+      plain: true
+
+    })
+
+    const returnComment = await Comment.findOne({
+      where: {
+        id: affectedRows.id
+      },
+      include: [
+        {model: User},
+        {model: Verse}
+      ]
+    })
+    res.json(returnComment)
+  } catch(err) {next(err)}
+})
+
 router.delete('/:commentId', async (req, res, next) => {
   try {
     const deletedComment = await Comment.destroy({
