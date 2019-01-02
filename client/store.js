@@ -9,7 +9,9 @@ const GOT_USER = 'GOT_USER';
 const SELECTED_VERSE = 'SELECTED_VERSE';
 const LOGGED_IN_USER = 'LOGGED_IN_USER';
 const NEW_COMMENT = 'NEW_COMMENT';
-const DELETED_COMMENT = 'DELETED_COMMENT'
+const DELETED_COMMENT = 'DELETED_COMMENT';
+const EDITED_COMMENT = 'EDITED_COMMENT';
+
 
 // action creators
 const gotVerses = (verses) => ({
@@ -30,6 +32,11 @@ const gotComment = (comment) => ({
 const deletedComment = (commentId) => ({
   type: DELETED_COMMENT,
   commentId
+})
+
+const editedComment = (editedComment) => ({
+  type: EDITED_COMMENT,
+  editedComment
 })
 
 
@@ -89,12 +96,23 @@ export const deleteComment = (book, commentId) => {
   return async (dispatch) => {
     try {
       const {data} = await axios.delete(`/api/${book}/${commentId}`);
-      console.log('returned', data)
       const action = deletedComment(data);
       dispatch(action);
     }catch(err) {console.log(err)}
   }
 }
+
+export const editComment = (book, commentId, newComment) => {
+  return async (dispatch) => {
+    try {
+      const {data} = await axios.put(`/api/${book}/${commentId}`, {newComment});
+      console.log('data', data)
+      const action = editedComment(data);
+      dispatch(action);
+    }catch(err) {console.log(err)}
+  }
+}
+
 
 export const logout = () => {
   return async dispatch => {
@@ -131,8 +149,15 @@ const reducer = (state = initialState, action) => {
       const filteredComments = [...state.selectedVerse.comments].filter(comment => {
         return comment.id !== Number(action.commentId)
       })
-      console.log('filteredComments', filteredComments)
       return {...state, selectedVerse: {...state.selectedVerse, comments: filteredComments}}
+    case EDITED_COMMENT:
+      const editedComments = [...state.selectedVerse.comments].map(comment => {
+        if (comment.id === action.editedComment.id) {
+          comment.content = action.editedComment.content
+        }
+        return comment
+      })
+    return {...state, selectedVerse: {...state.selectedVerse, comments: editedComments}}
     default:
       return state;
   }

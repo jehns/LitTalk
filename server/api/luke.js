@@ -35,13 +35,14 @@ router.post('/', async (req, res, next) => {
   } catch(err) {next(err)}
 })
 
-router.put('/', async (req, res, next) => {
+router.put('/:commentId', async (req, res, next) => {
   try {
-    const [numberOfAffectedRows, affectedRows]= await Comment.update({
-      content: req.body.content,
+    const [numberOfAffectedRows, affectedRows] = await Comment.update({
+
+      content: req.body.newComment,
       }, {
         where: {
-          id: req.body.id
+          id: req.params.commentId
         },
       returning: true,
       plain: true

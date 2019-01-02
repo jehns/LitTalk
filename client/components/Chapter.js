@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
-import { getChapterVerses, selectVerse, postComment, deleteComment } from '../store';
+import { getChapterVerses, selectVerse, postComment, deleteComment, editComment } from '../store';
 import { Grid, Typography, FormGroup, Input, InputLabel, Button, DialogContentText, Avatar, IconButton, Icon } from '@material-ui/core';
 import { Cancel, Edit } from '@material-ui/icons';
 import Footer from './Footer';
@@ -13,6 +13,8 @@ class Chapter extends Component {
     super()
     this.state = {
       newComment: '',
+      editCommentInput: '',
+      renderCommentEditor: false,
       showCommentsButton: false
     }
     this.handleClick = this.handleClick.bind(this)
@@ -21,6 +23,8 @@ class Chapter extends Component {
     this.handleCommentsButton = this.handleCommentsButton.bind(this)
     this.handleChangeFooter = this.handleChangeFooter.bind(this)
     this.handleDeleteCommentButton = this.handleDeleteCommentButton.bind(this)
+    this.handleEditCommentButton = this.handleEditCommentButton.bind(this)
+    this.handleClickEditComment = this.handleClickEditComment.bind(this)
   }
 
   async componentDidMount () {
@@ -85,9 +89,20 @@ class Chapter extends Component {
     this.props.deleteComment(this.props.match.params.book, commentId)
   }
 
-  // handleEditCommentButton(commentId) {
-  //   this.props.deleteComment(this.props.match.params.book, commentId)
-  // }
+  handleEditCommentButton(commentContent) {
+    this.setState({
+      renderCommentEditor: !this.state.renderCommentEditor,
+      editCommentInput: commentContent
+    })
+  }
+
+  handleClickEditComment(commentId) {
+    this.props.editComment(this.props.match.params.book, commentId, this.state.editCommentInput)
+    this.setState({
+      renderCommentEditor: false,
+      editComment: ""
+    })
+  }
 
   render() {
     return (
@@ -131,6 +146,7 @@ class Chapter extends Component {
               return (
 
               <div key={comment.id}>
+
               <Grid container alignItems="center" spacing={24} direction="row">
                 <Grid item md>
                   <Grid container direction="row" alignItems="center">
@@ -138,13 +154,14 @@ class Chapter extends Component {
                   <Typography variant="h5">{comment.user.name}</Typography>
                   </Grid>
                 </Grid>
+
                 {comment.user.id === this.props.user.id ?
                 <Grid item md>
                   <Grid container alignItems="center" justify="flex-end">
                     <IconButton onClick={() => this.handleDeleteCommentButton(comment.id)}>
                       <Cancel />
                     </IconButton>
-                    <IconButton>
+                    <IconButton onClick={() => this.handleEditCommentButton(comment.content)}>
                       <Edit />
                     </IconButton>
                   </Grid>
@@ -153,9 +170,16 @@ class Chapter extends Component {
 
               </Grid>
 
-                <Grid container>
-                  <Typography variant="body1">{comment.content}</Typography>
-                </Grid>
+                {this.state.renderCommentEditor && comment.user.id === this.props.user.id?
+                  <FormGroup>
+                    <Input name="editCommentInput" type="text" onChange={this.handleChange} value={this.state.editCommentInput}/>
+                    <Button onClick={() => this.handleClickEditComment(comment.id)}>Save Comment Edits</Button>
+                  </FormGroup>
+                  :
+                  <Grid container>
+                    <Typography variant="body1">{comment.content}</Typography>
+                  </Grid>
+                }
 
                 <Grid container>
                   <Typography variant="caption" className="italics">{comment.date}</Typography>
@@ -164,9 +188,10 @@ class Chapter extends Component {
               </div>
               )
             })}
+
             <br />
             {this.props.user.id ?
-              <FormGroup>
+            <FormGroup>
               <Input name="newComment" type="text" onChange={this.handleChange} value={this.state.newComment}/>
               <Button onClick={this.handleClickButton}>Post Comment</Button>
             </FormGroup>
@@ -202,7 +227,8 @@ const mapDispatchToProps = (dispatch) => {
     getChapterVerses: (book, chapter) => dispatch(getChapterVerses(book, chapter)),
     selectVerse: (verse) => dispatch(selectVerse(verse)),
     postComment: (comment, book) => dispatch(postComment(comment, book)),
-    deleteComment: (book, commentId) => dispatch(deleteComment(book, commentId))
+    deleteComment: (book, commentId) => dispatch(deleteComment(book, commentId)),
+    editComment: (book, commentId, newComment) => dispatch(editComment(book, commentId, newComment))
   }
 }
 
