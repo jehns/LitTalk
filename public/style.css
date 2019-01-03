@@ -36,3 +36,7 @@ header {
 .homeLists {
   position: fixed;
 }
+
+.arrowButton {
+  padding: 0;
+}

@@ -35,6 +35,34 @@ router.post('/', async (req, res, next) => {
   } catch(err) {next(err)}
 })
 
+router.put('/votes/:commentId', async (req, res, next) => {
+  try {
+    const [numberOfAffectedRows, affectedRows] = await Comment.update({
+
+      votes: req.body.newVotesTotal,
+      }, {
+        where: {
+          id: req.params.commentId
+        },
+      returning: true,
+      plain: true
+
+    })
+
+    const returnComment = await Comment.findOne({
+      where: {
+        id: affectedRows.id
+      },
+      include: [
+        {model: User},
+        {model: Verse}
+      ]
+    })
+    res.json(returnComment)
+  } catch(err) {next(err)}
+})
+
+
 router.put('/:commentId', async (req, res, next) => {
   try {
     const [numberOfAffectedRows, affectedRows] = await Comment.update({

@@ -10,6 +10,10 @@ const Comment = db.define('comment', {
       notEmpty: true
     }
   },
+  votes: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  },
   date: {
     type: Sequelize.STRING,
     defaultValue: (new Date()).toDateString()

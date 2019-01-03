@@ -11,6 +11,7 @@ const LOGGED_IN_USER = 'LOGGED_IN_USER';
 const NEW_COMMENT = 'NEW_COMMENT';
 const DELETED_COMMENT = 'DELETED_COMMENT';
 const EDITED_COMMENT = 'EDITED_COMMENT';
+const EDITED_VOTES = 'EDITED_VOTES';
 
 
 // action creators
@@ -37,6 +38,11 @@ const deletedComment = (commentId) => ({
 const editedComment = (editedComment) => ({
   type: EDITED_COMMENT,
   editedComment
+})
+
+const editedVotes = (newComment) => ({
+  type: EDITED_VOTES,
+  newComment
 })
 
 
@@ -106,8 +112,17 @@ export const editComment = (book, commentId, newComment) => {
   return async (dispatch) => {
     try {
       const {data} = await axios.put(`/api/${book}/${commentId}`, {newComment});
-      console.log('data', data)
       const action = editedComment(data);
+      dispatch(action);
+    }catch(err) {console.log(err)}
+  }
+}
+
+export const editVotes = (book, commentId, newVotesTotal) => {
+  return async (dispatch) => {
+    try {
+      const {data} = await axios.put(`/api/${book}/votes/${commentId}`, {newVotesTotal});
+      const action = editedVotes(data);
       dispatch(action);
     }catch(err) {console.log(err)}
   }
@@ -158,6 +173,14 @@ const reducer = (state = initialState, action) => {
         return comment
       })
     return {...state, selectedVerse: {...state.selectedVerse, comments: editedComments}}
+    case EDITED_VOTES:
+    const editedVotes = [...state.selectedVerse.comments].map(comment => {
+      if (comment.id === action.newComment.id) {
+        comment.votes = action.newComment.votes
+      }
+      return comment
+    })
+    return {...state, selectedVerse: {...state.selectedVerse, comments: editedVotes}}
     default:
       return state;
   }

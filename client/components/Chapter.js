@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
-import { getChapterVerses, selectVerse, postComment, deleteComment, editComment } from '../store';
+import { getChapterVerses, selectVerse, postComment, deleteComment, editComment, editVotes } from '../store';
 import { Grid, Typography, FormGroup, Input, InputLabel, Button, DialogContentText, Avatar, IconButton, Icon } from '@material-ui/core';
-import { Cancel, Edit } from '@material-ui/icons';
+import { Cancel, Edit, ArrowUpward, ArrowDownward } from '@material-ui/icons';
 import Footer from './Footer';
 
 
@@ -25,6 +25,8 @@ class Chapter extends Component {
     this.handleDeleteCommentButton = this.handleDeleteCommentButton.bind(this)
     this.handleEditCommentButton = this.handleEditCommentButton.bind(this)
     this.handleClickEditComment = this.handleClickEditComment.bind(this)
+    this.upVoteClick = this.upVoteClick.bind(this)
+    this.downVoteClick = this.downVoteClick.bind(this)
   }
 
   async componentDidMount () {
@@ -104,6 +106,16 @@ class Chapter extends Component {
     })
   }
 
+  upVoteClick(commentId, votesTotal) {
+    votesTotal ++;
+    this.props.editVotes(this.props.match.params.book, commentId, votesTotal)
+  }
+
+  downVoteClick(commentId, votesTotal) {
+    votesTotal --;
+    this.props.editVotes(this.props.match.params.book, commentId, votesTotal)
+  }
+
   render() {
     return (
       <div>
@@ -119,7 +131,9 @@ class Chapter extends Component {
           {this.props.verses ?
           <div>
             <Typography variant="h5">Chapter {this.props.match.params.chapter}</Typography>
-            {this.props.verses.map((verse) => {
+            {this.props.verses.sort((a, b) => {
+              return a.verse - b.verse;
+            }).map((verse) => {
               return <p key={verse.id} onClick={() => this.handleClick(verse)} className={this.props.selectedVerse && this.props.selectedVerse.id === verse.id ? "orange box" : "box"}>{verse.content}</p>
             })}
           </div>
@@ -142,7 +156,9 @@ class Chapter extends Component {
             <div>
             <br />
 
-            {this.props.selectedVerse.comments.map(comment => {
+            {this.props.selectedVerse.comments.sort((a, b) => {
+              return b.votes - a.votes;
+            }).map(comment => {
               return (
 
               <div key={comment.id}>
@@ -150,8 +166,32 @@ class Chapter extends Component {
               <Grid container alignItems="center" spacing={24} direction="row">
                 <Grid item md>
                   <Grid container direction="row" alignItems="center">
-                  <Avatar src={`${comment.user.imageUrl}`}/>
-                  <Typography variant="h5">{comment.user.name}</Typography>
+                  <Grid item>
+                    {comment.user.id === this.props.user.id || !this.props.user.id ?
+                      "" :
+                      <Grid container direction="column" alignItems="center">
+                      <IconButton style={{padding: 0}} onClick={() => this.upVoteClick(comment.id, comment.votes)}>
+                        <ArrowUpward />
+                      </IconButton>
+                      <IconButton style={{padding: 0}} onClick={() => this.downVoteClick(comment.id, comment.votes)}>
+                        <ArrowDownward />
+                      </IconButton>
+                    </Grid>
+                    }
+                  </Grid>
+
+                  <Grid item style={{padding: 1}}>
+                    <Avatar src={`${comment.user.imageUrl}`}/>
+                  </Grid>
+
+                  <Grid item style={{padding: 1}}>
+                    <Typography variant="h5">{comment.user.name}</Typography>
+                  </Grid>
+
+                  <Grid item style={{padding: 5}}>
+                    <Typography variant="caption" className="italics">Votes {comment.votes}</Typography>
+                  </Grid>
+
                   </Grid>
                 </Grid>
 
@@ -228,7 +268,8 @@ const mapDispatchToProps = (dispatch) => {
     selectVerse: (verse) => dispatch(selectVerse(verse)),
     postComment: (comment, book) => dispatch(postComment(comment, book)),
     deleteComment: (book, commentId) => dispatch(deleteComment(book, commentId)),
-    editComment: (book, commentId, newComment) => dispatch(editComment(book, commentId, newComment))
+    editComment: (book, commentId, newComment) => dispatch(editComment(book, commentId, newComment)),
+    editVotes: (book, commentId, newVotes) => dispatch(editVotes(book, commentId, newVotes))
   }
 }
 
