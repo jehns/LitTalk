@@ -21,7 +21,7 @@ const verses = [
 
 const comments = [
   {content: "Whales are just like jesus aren't they?", votes: 3, userId: 1, verseId: 1,},
-  {content: "Neo wouldn't talk if zion was under attack.", votes: 2, userId: 2, verseId: 1,},
+  {content: "Neo wouldn't talk if zion was under attack.", votes: 3, userId: 2, verseId: 1,},
   {content: "Morpheus was the one.", votes: 1, userId: 4, verseId: 1,},
   {content: "I think god is stupid just like my horse", votes: 4, userId: 1, verseId: 2, },
   {content: "Skeptics be cray.", votes: 7, userId: 2, verseId: 2, },

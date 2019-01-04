@@ -5,6 +5,7 @@ import { getChapterVerses, selectVerse, postComment, deleteComment, editComment,
 import { Grid, Typography, FormGroup, Input, InputLabel, Button, DialogContentText, Avatar, IconButton, Icon } from '@material-ui/core';
 import { Cancel, Edit, ArrowUpward, ArrowDownward } from '@material-ui/icons';
 import Footer from './Footer';
+import { withTheme } from '@material-ui/core/styles';
 
 
 
@@ -170,10 +171,10 @@ class Chapter extends Component {
                     {comment.user.id === this.props.user.id || !this.props.user.id ?
                       "" :
                       <Grid container direction="column" alignItems="center">
-                      <IconButton style={{padding: 0}} onClick={() => this.upVoteClick(comment.id, comment.votes)}>
+                      <IconButton style={{padding: 0}} color={this.props.user.upVotes.includes(comment.id) ? "primary" : "default"} onClick={() => this.upVoteClick(comment.id, comment.votes)}>
                         <ArrowUpward />
                       </IconButton>
-                      <IconButton style={{padding: 0}} onClick={() => this.downVoteClick(comment.id, comment.votes)}>
+                      <IconButton style={{padding: 0}} color={this.props.user.downVotes.includes(comment.id) ? "primary" : "default"}  onClick={() => this.downVoteClick(comment.id, comment.votes)}>
                         <ArrowDownward />
                       </IconButton>
                     </Grid>
@@ -273,4 +274,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Chapter))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTheme()(Chapter)))

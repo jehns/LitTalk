@@ -1,3 +1,5 @@
+/* eslint-disable no-case-declarations */
+/* eslint-disable complexity */
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
@@ -40,9 +42,10 @@ const editedComment = (editedComment) => ({
   editedComment
 })
 
-const editedVotes = (editedCommentVote) => ({
+const editedVotes = (user, comment) => ({
   type: EDITED_VOTES,
-  editedCommentVote
+  user,
+  comment
 })
 
 
@@ -121,9 +124,8 @@ export const editComment = (book, commentId, newComment) => {
 export const editVotes = (book, commentId, userId, upOrDown) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.put(`/api/${book}/votes/${commentId}`, {userId, upOrDown});
-      console.log(data.affectedRowsComment)
-      const action = editedVotes(data.affectedRowsComment);
+      const newUserAndComment = await axios.put(`/api/${book}/votes/${commentId}`, {userId, upOrDown});
+      const action = editedVotes(newUserAndComment.data.user, newUserAndComment.data.comment);
       dispatch(action);
     }catch(err) {console.log(err)}
   }
@@ -176,12 +178,12 @@ const reducer = (state = initialState, action) => {
     return {...state, selectedVerse: {...state.selectedVerse, comments: editedComments}}
     case EDITED_VOTES:
     const editedVotes = [...state.selectedVerse.comments].map(comment => {
-      if (comment.id === action.editedCommentVote.id) {
-        comment.votes = action.editedCommentVote.votes
+      if (comment.id === action.comment.id) {
+        comment.votes = action.comment.votes
       }
       return comment
     })
-    return {...state, selectedVerse: {...state.selectedVerse, comments: editedVotes}}
+    return {...state, selectedVerse: {...state.selectedVerse, comments: editedVotes}, user: action.user}
     default:
       return state;
   }

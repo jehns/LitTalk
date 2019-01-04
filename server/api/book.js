@@ -1,3 +1,4 @@
+/* eslint-disable no-lonely-if */
 /* eslint-disable max-statements */
 const router = require('express').Router()
 const {db, Book, Comment, Verse, User} = require('../db')
@@ -44,7 +45,7 @@ router.put('/votes/:commentId', async (req, res, next) => {
           returning: true,
           plain: true
         })
-        res.json({affectedRowsUser, affectedRowsComment})
+        res.json({user:affectedRowsUser, comment:affectedRowsComment})
       }
 
       // User has not upvoted the comment yet
@@ -76,7 +77,7 @@ router.put('/votes/:commentId', async (req, res, next) => {
           returning: true,
           plain: true
         })
-        res.json({affectedRowsUser, affectedRowsComment})
+        res.json({user:affectedRowsUser, comment:affectedRowsComment})
       }
 
     }
@@ -116,7 +117,7 @@ router.put('/votes/:commentId', async (req, res, next) => {
             returning: true,
             plain: true
           })
-          res.json({affectedRowsUser, affectedRowsComment})
+          res.json({user:affectedRowsUser, comment:affectedRowsComment})
         }
 
         // User has not downvoted the comment yet
@@ -148,7 +149,7 @@ router.put('/votes/:commentId', async (req, res, next) => {
             returning: true,
             plain: true
           })
-          res.json({affectedRowsUser, affectedRowsComment})
+          res.json({user:affectedRowsUser, comment:affectedRowsComment})
         }
 
     }
