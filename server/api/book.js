@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 const router = require('express').Router()
 const {db, Book, Comment, Verse, User} = require('../db')
 
@@ -22,8 +23,6 @@ router.put('/votes/:commentId', async (req, res, next) => {
 
         updatedVoteCount = currentComment.votes - 1;
 
-
-
         // update User upvotes
         let [numberOfAffectedRowsUser, affectedRowsUser] = await User.update({
           upVotes: updatedUpVotes
@@ -45,6 +44,7 @@ router.put('/votes/:commentId', async (req, res, next) => {
           returning: true,
           plain: true
         })
+        res.json({affectedRowsUser, affectedRowsComment})
       }
 
       // User has not upvoted the comment yet
@@ -81,70 +81,77 @@ router.put('/votes/:commentId', async (req, res, next) => {
 
     }
 
+
+
     // Down-Vote request
-    // else {
-    //   // User has already down-voted the comment
-    //   if (currentUser.downVotes.includes(commentId)) {
-    //     updatedUpVotes = currentUser.upVotes.slice().filter(commentId => {
-    //       return commentId !== commentId;
-    //     })
-    //     updatedVoteCount = currentComment.votes + 1;
+    else {
+        // User has already down-voted the comment
+        if (currentUser.downVotes.includes(commentId)) {
+          updatedUpVotes = currentUser.downVotes.slice().filter(id => {
+            return id !== commentId;
+          })
 
-    //     // update User upvotes
-    //     let [numberOfAffectedRowsUser, affectedRowsUser] = await User.update({
-    //       downVotes: updatedUpVotes
-    //     }, {
-    //       where: {
-    //         id: req.body.userId
-    //       },
-    //       returning: true,
-    //       plain: true
-    //     })
-
-    //     // update Comment vote count
-    //     let [numberOfAffectedRowsComment, affectedRowsComment] = await Comment.update({
-    //       votes: updatedVoteCount,
-    //       }, {
-    //         where: {
-    //           id: commentId
-    //         },
-    //       returning: true,
-    //       plain: true
-    //     })
-    //   }
-
-    //   // User has not upvoted the comment
-    //   else {
-    //     updatedUpVotes = currentUser.downVotes.slice().push(commentId)
-    //     updatedVoteCount = currentComment.votes - 1;
-
-    //     // update User upvotes
-    //     let [numberOfAffectedRowsUser, affectedRowsUser] = await User.update({
-    //       downVotes: updatedUpVotes
-    //     }, {
-    //       where: {
-    //         id: req.body.userId
-    //       },
-    //       returning: true,
-    //       plain: true
-    //     })
-
-    //     // update Comment vote count
-    //     let [numberOfAffectedRowsComment, affectedRowsComment] = await Comment.update({
-    //       votes: updatedVoteCount,
-    //       }, {
-    //         where: {
-    //           id: commentId
-    //         },
-    //       returning: true,
-    //       plain: true
-    //     })
-    //   }
-    // }
+          updatedVoteCount = currentComment.votes + 1;
 
 
 
+          // update User upvotes
+          let [numberOfAffectedRowsUser, affectedRowsUser] = await User.update({
+            downVotes: updatedUpVotes
+          }, {
+            where: {
+              id: req.body.userId
+            },
+            returning: true,
+            plain: true
+          })
 
+          // update Comment vote count
+          let [numberOfAffectedRowsComment, affectedRowsComment] = await Comment.update({
+            votes: updatedVoteCount,
+            }, {
+              where: {
+                id: commentId
+              },
+            returning: true,
+            plain: true
+          })
+          res.json({affectedRowsUser, affectedRowsComment})
+        }
+
+        // User has not downvoted the comment yet
+        else {
+
+          updatedUpVotes = currentUser.downVotes.slice()
+          updatedUpVotes.push(commentId)
+
+          updatedVoteCount = currentComment.votes - 1;
+
+          // update User upvotes
+          let [numberOfAffectedRowsUser, affectedRowsUser] = await User.update({
+            downVotes: updatedUpVotes
+          }, {
+            where: {
+              id: req.body.userId
+            },
+            returning: true,
+            plain: true
+          })
+
+          // update Comment vote count
+          let [numberOfAffectedRowsComment, affectedRowsComment] = await Comment.update({
+            votes: updatedVoteCount,
+            }, {
+              where: {
+                id: commentId
+              },
+            returning: true,
+            plain: true
+          })
+          res.json({affectedRowsUser, affectedRowsComment})
+        }
+
+    }
 
   } catch(err) {next(err)}
 })
