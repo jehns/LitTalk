@@ -40,9 +40,9 @@ const editedComment = (editedComment) => ({
   editedComment
 })
 
-const editedVotes = (newComment) => ({
+const editedVotes = (editedCommentVote) => ({
   type: EDITED_VOTES,
-  newComment
+  editedCommentVote
 })
 
 
@@ -118,11 +118,12 @@ export const editComment = (book, commentId, newComment) => {
   }
 }
 
-export const editVotes = (book, commentId, newVotesTotal) => {
+export const editVotes = (book, commentId, userId, upOrDown) => {
   return async (dispatch) => {
     try {
-      const {data} = await axios.put(`/api/${book}/votes/${commentId}`, {newVotesTotal});
-      const action = editedVotes(data);
+      const {data} = await axios.put(`/api/${book}/votes/${commentId}`, {userId, upOrDown});
+      console.log(data.affectedRowsComment)
+      const action = editedVotes(data.affectedRowsComment);
       dispatch(action);
     }catch(err) {console.log(err)}
   }
@@ -175,8 +176,8 @@ const reducer = (state = initialState, action) => {
     return {...state, selectedVerse: {...state.selectedVerse, comments: editedComments}}
     case EDITED_VOTES:
     const editedVotes = [...state.selectedVerse.comments].map(comment => {
-      if (comment.id === action.newComment.id) {
-        comment.votes = action.newComment.votes
+      if (comment.id === action.editedCommentVote.id) {
+        comment.votes = action.editedCommentVote.votes
       }
       return comment
     })

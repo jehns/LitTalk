@@ -106,14 +106,14 @@ class Chapter extends Component {
     })
   }
 
-  upVoteClick(commentId, votesTotal) {
-    votesTotal ++;
-    this.props.editVotes(this.props.match.params.book, commentId, votesTotal)
+  upVoteClick(commentId) {
+    const up = true;
+    this.props.editVotes(this.props.match.params.book, commentId, this.props.user.id, up)
   }
 
-  downVoteClick(commentId, votesTotal) {
-    votesTotal --;
-    this.props.editVotes(this.props.match.params.book, commentId, votesTotal)
+  downVoteClick(commentId) {
+    const up = false;
+    this.props.editVotes(this.props.match.params.book, commentId, this.props.user.id, up)
   }
 
   render() {
@@ -269,7 +269,7 @@ const mapDispatchToProps = (dispatch) => {
     postComment: (comment, book) => dispatch(postComment(comment, book)),
     deleteComment: (book, commentId) => dispatch(deleteComment(book, commentId)),
     editComment: (book, commentId, newComment) => dispatch(editComment(book, commentId, newComment)),
-    editVotes: (book, commentId, newVotes) => dispatch(editVotes(book, commentId, newVotes))
+    editVotes: (book, commentId, userId, upOrDown) => dispatch(editVotes(book, commentId, userId, upOrDown))
   }
 }
 

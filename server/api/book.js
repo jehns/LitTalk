@@ -2,6 +2,154 @@ const router = require('express').Router()
 const {db, Book, Comment, Verse, User} = require('../db')
 
 
+// Comment Voting
+router.put('/votes/:commentId', async (req, res, next) => {
+  const commentId = Number(req.params.commentId);
+  try {
+    let updatedUpVotes;
+    let updatedVoteCount;
+    // logged-in user
+    const currentUser = await User.findByPk(req.body.userId);
+    const currentComment = await Comment.findByPk(commentId);
+
+    // Request is an up-vote if true
+    if (req.body.upOrDown) {
+      // User has already up-voted the comment
+      if (currentUser.upVotes.includes(commentId)) {
+        updatedUpVotes = currentUser.upVotes.slice().filter(id => {
+          return id !== commentId;
+        })
+
+        updatedVoteCount = currentComment.votes - 1;
+
+
+
+        // update User upvotes
+        let [numberOfAffectedRowsUser, affectedRowsUser] = await User.update({
+          upVotes: updatedUpVotes
+        }, {
+          where: {
+            id: req.body.userId
+          },
+          returning: true,
+          plain: true
+        })
+
+        // update Comment vote count
+        let [numberOfAffectedRowsComment, affectedRowsComment] = await Comment.update({
+          votes: updatedVoteCount,
+          }, {
+            where: {
+              id: commentId
+            },
+          returning: true,
+          plain: true
+        })
+      }
+
+      // User has not upvoted the comment yet
+      else {
+
+        updatedUpVotes = currentUser.upVotes.slice()
+        updatedUpVotes.push(commentId)
+
+        updatedVoteCount = currentComment.votes + 1;
+
+        // update User upvotes
+        let [numberOfAffectedRowsUser, affectedRowsUser] = await User.update({
+          upVotes: updatedUpVotes
+        }, {
+          where: {
+            id: req.body.userId
+          },
+          returning: true,
+          plain: true
+        })
+
+        // update Comment vote count
+        let [numberOfAffectedRowsComment, affectedRowsComment] = await Comment.update({
+          votes: updatedVoteCount,
+          }, {
+            where: {
+              id: commentId
+            },
+          returning: true,
+          plain: true
+        })
+        res.json({affectedRowsUser, affectedRowsComment})
+      }
+
+    }
+
+    // Down-Vote request
+    // else {
+    //   // User has already down-voted the comment
+    //   if (currentUser.downVotes.includes(commentId)) {
+    //     updatedUpVotes = currentUser.upVotes.slice().filter(commentId => {
+    //       return commentId !== commentId;
+    //     })
+    //     updatedVoteCount = currentComment.votes + 1;
+
+    //     // update User upvotes
+    //     let [numberOfAffectedRowsUser, affectedRowsUser] = await User.update({
+    //       downVotes: updatedUpVotes
+    //     }, {
+    //       where: {
+    //         id: req.body.userId
+    //       },
+    //       returning: true,
+    //       plain: true
+    //     })
+
+    //     // update Comment vote count
+    //     let [numberOfAffectedRowsComment, affectedRowsComment] = await Comment.update({
+    //       votes: updatedVoteCount,
+    //       }, {
+    //         where: {
+    //           id: commentId
+    //         },
+    //       returning: true,
+    //       plain: true
+    //     })
+    //   }
+
+    //   // User has not upvoted the comment
+    //   else {
+    //     updatedUpVotes = currentUser.downVotes.slice().push(commentId)
+    //     updatedVoteCount = currentComment.votes - 1;
+
+    //     // update User upvotes
+    //     let [numberOfAffectedRowsUser, affectedRowsUser] = await User.update({
+    //       downVotes: updatedUpVotes
+    //     }, {
+    //       where: {
+    //         id: req.body.userId
+    //       },
+    //       returning: true,
+    //       plain: true
+    //     })
+
+    //     // update Comment vote count
+    //     let [numberOfAffectedRowsComment, affectedRowsComment] = await Comment.update({
+    //       votes: updatedVoteCount,
+    //       }, {
+    //         where: {
+    //           id: commentId
+    //         },
+    //       returning: true,
+    //       plain: true
+    //     })
+    //   }
+    // }
+
+
+
+
+
+  } catch(err) {next(err)}
+})
+
+
 router.get('/:chapter', async (req, res, next) => {
   try {
     const verses = await Verse.findAll({
@@ -25,33 +173,6 @@ router.post('/', async (req, res, next) => {
     const returnComment = await Comment.findOne({
       where: {
         id: comment.id
-      },
-      include: [
-        {model: User},
-        {model: Verse}
-      ]
-    })
-    res.json(returnComment)
-  } catch(err) {next(err)}
-})
-
-router.put('/votes/:commentId', async (req, res, next) => {
-  try {
-    const [numberOfAffectedRows, affectedRows] = await Comment.update({
-
-      votes: req.body.newVotesTotal,
-      }, {
-        where: {
-          id: req.params.commentId
-        },
-      returning: true,
-      plain: true
-
-    })
-
-    const returnComment = await Comment.findOne({
-      where: {
-        id: affectedRows.id
       },
       include: [
         {model: User},

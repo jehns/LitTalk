@@ -31,6 +31,14 @@ const User = db.define('user', {
   imageUrl: {
     type: Sequelize.STRING,
     defaultValue: 'https://image.flaticon.com/icons/svg/145/145867.svg'
+  },
+  upVotes: {
+    type: Sequelize.ARRAY(Sequelize.INTEGER),
+    defaultValue: []
+  },
+  downVotes: {
+    type: Sequelize.ARRAY(Sequelize.INTEGER),
+    defaultValue: []
   }
 
 })
