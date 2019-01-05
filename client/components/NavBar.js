@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { logout } from '../store';
 import { NavLink, withRouter } from 'react-router-dom'
-import { AppBar, Typography, Grid, Button, Avatar} from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Grid, Button, Avatar, IconButton} from '@material-ui/core';
+import { Home, Menu, ArrowForward, ArrowBack } from '@material-ui/icons';
 
 
 class NavBar extends Component {
@@ -23,17 +24,31 @@ class NavBar extends Component {
 
   render() {
     return (
-      <div>
+      <AppBar position="sticky">
+      <Toolbar>
+      <Grid container alignItems="center" justify="flex-start">
+          <Grid item>
+            <IconButton color="secondary">
+              <Menu />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <IconButton color="secondary">
+              <Home />
+            </IconButton>
+          </Grid>
+      </Grid>
+
         {this.props.user && this.props.user.id ?
         <Grid container alignItems="center" justify="flex-end">
           <Grid item>
             <Avatar src={`${this.props.user.imageUrl}`}/>
           </Grid>
           <Grid item>
-          <Button onClick={this.handleClickUser}>{this.props.user.name}</Button>
+          <Button onClick={this.handleClickUser} color="secondary">{this.props.user.name}</Button>
           </Grid>
           <Grid item>
-          <Button onClick={this.handleClickLogout}>Logout</Button>
+          <Button onClick={this.handleClickLogout} color="secondary">Logout</Button>
           </Grid>
         </Grid>
         :
@@ -43,7 +58,8 @@ class NavBar extends Component {
             <Button>Log In</Button>
           </NavLink>}
         </Grid>}
-      </div>
+        </Toolbar>
+      </AppBar>
     )
   }
 }

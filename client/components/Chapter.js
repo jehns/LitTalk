@@ -131,11 +131,11 @@ class Chapter extends Component {
         <Grid item sm style={{padding: 20}}>
           {this.props.verses ?
           <div>
-            <Typography variant="h5">Chapter {this.props.match.params.chapter}</Typography>
+            <Typography variant="h5" color="primary">Chapter {this.props.match.params.chapter}</Typography>
             {this.props.verses.sort((a, b) => {
               return a.verse - b.verse;
             }).map((verse) => {
-              return <p key={verse.id} onClick={() => this.handleClick(verse)} className={this.props.selectedVerse && this.props.selectedVerse.id === verse.id ? "orange box" : "box"}>{verse.content}</p>
+              return <p key={verse.id} onClick={() => this.handleClick(verse)} className={this.props.selectedVerse && this.props.selectedVerse.id === verse.id ? "red box" : "box"}>{verse.content}</p>
             })}
           </div>
           : <div>Something went wrong...</div>}
@@ -144,7 +144,7 @@ class Chapter extends Component {
 
 
         <Grid item sm style={{padding: 20}}>
-          <Typography variant="h5" style={{textDecoration: 'underline'}}>Annotation</Typography>
+          <Typography variant="h5" color="primary">Annotation</Typography>
           {this.props.selectedVerse && this.props.selectedVerse.id ?
           <div>
             <br />
@@ -152,7 +152,7 @@ class Chapter extends Component {
             <br />
             <br />
 
-            <Button onClick={this.handleCommentsButton} fullWidth={true} size='large'>Comments</Button>
+            <Button onClick={this.handleCommentsButton} fullWidth={true} size='large' color="primary">Comments</Button>
             {this.state.showCommentsButton ?
             <div>
             <br />
@@ -171,10 +171,10 @@ class Chapter extends Component {
                     {comment.user.id === this.props.user.id || !this.props.user.id ?
                       "" :
                       <Grid container direction="column" alignItems="center">
-                      <IconButton style={{padding: 0}} color={this.props.user.upVotes.includes(comment.id) ? "primary" : "default"} onClick={() => this.upVoteClick(comment.id, comment.votes)}>
+                      <IconButton style={{padding: 0}} color={this.props.user.upVotes.includes(comment.id) ? "secondary" : "default"} onClick={() => this.upVoteClick(comment.id, comment.votes)}>
                         <ArrowUpward />
                       </IconButton>
-                      <IconButton style={{padding: 0}} color={this.props.user.downVotes.includes(comment.id) ? "primary" : "default"}  onClick={() => this.downVoteClick(comment.id, comment.votes)}>
+                      <IconButton style={{padding: 0}} color={this.props.user.downVotes.includes(comment.id) ? "secondary" : "default"}  onClick={() => this.downVoteClick(comment.id, comment.votes)}>
                         <ArrowDownward />
                       </IconButton>
                     </Grid>
@@ -249,7 +249,6 @@ class Chapter extends Component {
         </Grid>
 
       </Grid>
-      <Footer onChange={this.handleChangeFooter}/>
       </div>
     )
   }
