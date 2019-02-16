@@ -6,7 +6,9 @@ import Home from './Home';
 import Chapter from './Chapter';
 import Login from './Login';
 import NavBar from './NavBar';
-import UserProfile from './UserProfile'
+import UserProfile from './UserProfile';
+import SideMenu from './SideMenu';
+import Footer from './Footer'
 
 
 
@@ -14,17 +16,30 @@ import UserProfile from './UserProfile'
 class Main extends Component {
   constructor() {
     super()
-    this.state = {}
+    this.state = {
+      sideMenuOpen: false
+    }
+    this.handleMenuClick = this.handleMenuClick.bind(this)
   }
 
   componentDidMount() {
     this.props.fetchUser()
   }
 
+  handleMenuClick() {
+    this.setState((prevState) => {
+      return {sideMenuOpen: !prevState.sideMenuOpen}
+    })
+  }
+
   render() {
     return (
       <div>
-        <NavBar />
+        <NavBar handleMenuClick={this.handleMenuClick}/>
+
+        {/* <SideMenu menuOpen={this.state.sideMenuOpen}/> */}
+
+
 
         <Switch>
           <Route exact path='/' component={Home}/>
@@ -34,6 +49,7 @@ class Main extends Component {
           <Route exact path='/:book/:chapter/:verse' component={Chapter}/>
         </Switch>
 
+        {/* <Footer /> */}
       </div>
     )
   }

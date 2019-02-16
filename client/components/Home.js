@@ -19,7 +19,7 @@ class Home extends Component {
           alignItems="center"
           justify="center"
         >
-          <Typography variant="h2" color="textPrimary">Skeptic's Annotated Bible</Typography>
+          {/* <Typography variant="h2" color="textPrimary">Skeptic's Annotated Bible</Typography> */}
         </Grid>
 
 
@@ -51,7 +51,7 @@ class Home extends Component {
                 justify="center"
                 >
 
-              <Typography variant="h5" style={{position: 'fixed'}}>Old Testament</Typography>
+              {/* <Typography variant="h5" style={{position: 'fixed'}}>Old Testament</Typography> */}
 
 
               <Grid item>
@@ -78,10 +78,10 @@ class Home extends Component {
               direction="column"
               alignItems="center"
               justify="center">
-              <Typography variant="h5" style={{position: 'fixed'}}>New Testament</Typography>
+              {/* <Typography variant="h5" style={{position: 'fixed'}}>New Testament</Typography> */}
               <br />
               <br />
-              <NavLink to='/luke/1' style={{textDecoration: 'none'}}>Luke</NavLink>
+              <NavLink to='/dune/1' style={{textDecoration: 'none'}}>Dune</NavLink>
             </Grid>
 
           </Grid>
@@ -91,7 +91,6 @@ class Home extends Component {
                 direction="column"
                 alignItems="center"
                 justify="center">
-              <Typography variant="h5" style={{position: 'fixed'}}>Catagories</Typography>
             </Grid>
           </Grid>
         </Grid>

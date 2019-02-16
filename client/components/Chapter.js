@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
 import { getChapterVerses, selectVerse, postComment, deleteComment, editComment, editVotes } from '../store';
 import { Grid, Typography, FormGroup, Input, InputLabel, Button, DialogContentText, Avatar, IconButton, Icon } from '@material-ui/core';
-import { Cancel, Edit, ArrowUpward, ArrowDownward } from '@material-ui/icons';
+import { Cancel, Edit, ArrowUpward, ArrowDownward, ArrowForward, ArrowBack } from '@material-ui/icons';
 import Footer from './Footer';
 import { withTheme } from '@material-ui/core/styles';
+import SideMenu from './SideMenu'
 
 
 
@@ -16,7 +17,7 @@ class Chapter extends Component {
       newComment: '',
       editCommentInput: '',
       renderCommentEditor: false,
-      showCommentsButton: false
+      showCommentsButton: false,
     }
     this.handleClick = this.handleClick.bind(this)
     this.handleClickButton = this.handleClickButton.bind(this)
@@ -122,16 +123,30 @@ class Chapter extends Component {
       <div>
       <Grid container>
 
-        <Grid container>
-          <Typography variant="h1">
-              {this.props.match.params.book.slice(0,1).toUpperCase() + this.props.match.params.book.slice(1)}
-          </Typography>
+        <Grid container alignContent="center" alignItems="center" justify="center">
+          <Grid item>
+            <Typography variant="h1" style={{padding: 17}}>
+                {this.props.match.params.book.slice(0,1).toUpperCase() + this.props.match.params.book.slice(1)}
+            </Typography>
+          </Grid>
         </Grid>
 
         <Grid item sm style={{padding: 20}}>
           {this.props.verses ?
           <div>
-            <Typography variant="h5" color="primary">Chapter {this.props.match.params.chapter}</Typography>
+            <Grid container direction="row" alignItems="center">
+              <Grid item>
+                <Typography variant="h5" color="primary">Chapter {this.props.match.params.chapter}</Typography>
+              </Grid>
+              <Grid item>
+                <IconButton><ArrowBack style={{color: 'black'}}/></IconButton>
+              </Grid>
+              <Grid item>
+                <IconButton><ArrowForward style={{color: 'black'}}/></IconButton>
+              </Grid>
+
+
+            </Grid>
             {this.props.verses.sort((a, b) => {
               return a.verse - b.verse;
             }).map((verse) => {
@@ -144,7 +159,9 @@ class Chapter extends Component {
 
 
         <Grid item sm style={{padding: 20}}>
-          <Typography variant="h5" color="primary">Annotation</Typography>
+        <Grid container direction="row" alignItems="center">
+          <Typography variant="h5" color="primary" style={{padding: 9}}>Annotation</Typography>
+        </Grid>
           {this.props.selectedVerse && this.props.selectedVerse.id ?
           <div>
             <br />

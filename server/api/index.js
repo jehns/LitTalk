@@ -17,7 +17,7 @@ const router = require('express').Router()
 // middleware will generate a 404, and send it to your
 // error-handling endware!
 router.use('/auth', require('./auth'))
-router.use('/luke', require('./book'))
+router.use('/dune', require('./book'))
 
 
 

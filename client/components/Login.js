@@ -43,7 +43,6 @@ class Login extends Component {
           alignItems="center"
           justify="center"
           >
-          <Typography variant="h2" color="textPrimary">Skeptic's Annotated Bible</Typography>
         </Grid>
 
         <Grid container
