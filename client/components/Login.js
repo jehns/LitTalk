@@ -50,7 +50,7 @@ class Login extends Component {
           direction="column"
           alignItems="center"
           justify="center"
-          style={{ minHeight: '100vh' }}
+          style={{ minHeight: '80vh' }}
         >
 
           <Typography variant="h2">Login</Typography>
