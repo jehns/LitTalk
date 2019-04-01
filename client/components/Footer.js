@@ -18,9 +18,9 @@ const Footer = (props) => {
 
 
 // const mapStateToProps = (state) => ({
-// })
+// });
 
 // const mapDispatchToProps = (dispatch) => ({
-// })
+// });
 
 export default withRouter(connect(null, null)(Footer));
